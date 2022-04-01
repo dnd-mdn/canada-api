@@ -6,7 +6,7 @@ API for fetching data from [canada.ca](https://www.canada.ca).
 
 ### Browsers
 
-    <script src="https://cdn.jsdelivr.net/gh/bsoicher/canada-api@1/dist/ca.js"><script>
+    <script src="https://cdn.jsdelivr.net/gh/bsoicher/canada-api/dist/ca.js"><script>
 
 This will create a global `ca` variable.
 
