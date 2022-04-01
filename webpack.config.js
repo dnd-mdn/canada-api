@@ -1,0 +1,24 @@
+const path = require('path');
+
+module.exports = {
+  mode: 'production',
+  entry: './src/index.js',
+  output: {
+    path: path.resolve(__dirname, './dist/'),
+    filename: 'ca.js',
+    library: {
+      name: 'ca',
+      type: 'umd'
+    },
+    globalObject: 'typeof self !== \'undefined\' ? self : this',
+    clean: true
+  },
+  externals: {
+    'cross-fetch': {
+      amd: 'cross-fetch',
+      commonjs:'cross-fetch',
+      commonjs2:'cross-fetch',
+      root: 'fetch'
+    }
+  }
+};
