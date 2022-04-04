@@ -8,7 +8,11 @@ API for fetching data from [canada.ca](https://www.canada.ca).
 
     <script src="https://cdn.jsdelivr.net/gh/bsoicher/canada-api/dist/ca.js"><script>
 
-This will create a global `ca` variable.
+Support: Edge 15+, Firefox 54+, Chrome 51+, Safari 10+
+
+### Nodejs
+
+Will be published to npm once stable
 
 ## API
 

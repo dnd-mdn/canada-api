@@ -1,5 +1,5 @@
 const fetch = require('cross-fetch')
-const Bottleneck = require('bottleneck/es5')
+const Bottleneck = require('bottleneck')
 
 const domain = 'https://www.canada.ca/'
 
@@ -11,9 +11,8 @@ var limiter = new Bottleneck({
     maxConcurrent: 5,
 })
 
-
-function noCache() {
-    return '?_=' + new Date().getTime()
+function formatURL(path, suffix) {
+    return domain + path + suffix + '?_=' + Date.now()
 }
 
 function normalizeNode(node) {
@@ -45,7 +44,7 @@ function normalizeAsset(path) {
     throw new Error('Invalid asset')
 }
 
-function fetchContent(response) {
+function checkStatus(response) {
     if (!response.ok) {
         throw new Error(response.statusText)
     } else if (response.url.indexOf(domain) !== 0) {
@@ -54,28 +53,18 @@ function fetchContent(response) {
         throw new Error('Not Found')
     }
 
-    if (response.headers.get('content-type') === 'application/json;charset=utf-8') {
-        return response.json()
-    }
-
-    return response.text()
+    return response
 }
-
-
 
 export function children(nodes, node) {
     node = normalizeNode(node)
 
-    return limiter.schedule(function(){
-        return fetch(domain + node.path + '.sitemap.xml' + noCache())
-    })
-        .then(fetchContent)
+    return limiter.schedule(() => fetch(formatURL(node.path, '.sitemap.xml')))
+        .then(checkStatus)
+        .then(response => response.text())
         .then(function (xml) {
             var empty = nodes.length == 0
 
-            
-
-            
             xml.match(/<url>(.*?)<\/url>/g).forEach(function (url) {
                 var path = normalizeNode(url).path
                 var date = Date.parse(url.match(/\d{4}-\d{2}-\d{2}/)[0]) / 1000
@@ -101,10 +90,9 @@ export function children(nodes, node) {
 export function meta(node) {
     node = normalizeNode(node)
 
-    return limiter.schedule(function(){
-        return fetch(domain + node.path + '/jcr:content.json' + noCache())
-    })
-        .then(fetchContent)
+    return limiter.schedule(() => fetch(formatURL(node.path, '/jcr:content.json')))
+        .then(checkStatus)
+        .then(response => response.json())
         .then(function (json) {
             for (var key in json) {
                 if (json[key] === 'true') {
@@ -127,14 +115,12 @@ export function meta(node) {
         })
 }
 
-
 export function html(node) {
     node = normalizeNode(node)
 
-    return limiter.schedule(function(){
-        return fetch(domain + node.path + '.html' + noCache())
-    })
-        .then(fetchContent)
+    return limiter.schedule(() => fetch(formatURL(node.path, '.html')))
+        .then(checkStatus)
+        .then(response => response.text())
         .then(function (html) {
             node.html = html.trim().replace(/\s{2,}/g, ' ')
             return node
@@ -148,10 +134,9 @@ export function html(node) {
 export function assetMeta(path) {
     path = normalizeAsset(path)
 
-    return limiter.schedule(function(){
-        return fetch(domain + path + '/jcr:content.json' + noCache())
-    })
-        .then(fetchContent)
+    return limiter.schedule(() => fetch(formatURL(path, '/jcr:content.json')))
+        .then(checkStatus)
+        .then(response => response.json())
         .then((json) => {
             json.path = path
             return json
