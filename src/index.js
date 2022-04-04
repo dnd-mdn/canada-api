@@ -132,7 +132,7 @@ export function html(node) {
     node = normalizeNode(node)
 
     return limiter.schedule(function(){
-        fetch(domain + node.path + '.html' + noCache())
+        return fetch(domain + node.path + '.html' + noCache())
     })
         .then(fetchContent)
         .then(function (html) {
@@ -149,7 +149,7 @@ export function assetMeta(path) {
     path = normalizeAsset(path)
 
     return limiter.schedule(function(){
-        fetch(domain + path + '/jcr:content.json' + noCache())
+        return fetch(domain + path + '/jcr:content.json' + noCache())
     })
         .then(fetchContent)
         .then((json) => {
