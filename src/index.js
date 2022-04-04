@@ -66,7 +66,9 @@ function fetchContent(response) {
 export function children(nodes, node) {
     node = normalizeNode(node)
 
-    return limiter.schedule(fetch, domain + node.path + '.sitemap.xml' + noCache())
+    return limiter.schedule(function(){
+        return fetch(domain + node.path + '.sitemap.xml' + noCache())
+    })
         .then(fetchContent)
         .then(function (xml) {
             var empty = nodes.length == 0
@@ -99,7 +101,9 @@ export function children(nodes, node) {
 export function meta(node) {
     node = normalizeNode(node)
 
-    return limiter.schedule(fetch, domain + node.path + '/jcr:content.json' + noCache())
+    return limiter.schedule(function(){
+        return fetch(domain + node.path + '/jcr:content.json' + noCache())
+    })
         .then(fetchContent)
         .then(function (json) {
             for (var key in json) {
@@ -127,7 +131,9 @@ export function meta(node) {
 export function html(node) {
     node = normalizeNode(node)
 
-    return limiter.schedule(fetch, domain + node.path + '.html' + noCache())
+    return limiter.schedule(function(){
+        fetch(domain + node.path + '.html' + noCache())
+    })
         .then(fetchContent)
         .then(function (html) {
             node.html = html.trim().replace(/\s{2,}/g, ' ')
@@ -142,7 +148,9 @@ export function html(node) {
 export function assetMeta(path) {
     path = normalizeAsset(path)
 
-    return limiter.schedule(fetch, domain + path + '/jcr:content.json' + noCache())
+    return limiter.schedule(function(){
+        fetch(domain + path + '/jcr:content.json' + noCache())
+    })
         .then(fetchContent)
         .then((json) => {
             json.path = path
