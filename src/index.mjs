@@ -35,10 +35,10 @@ function parseDate(date) {
  * Throttles requests to prevent being throttled by the server
  */
 export const limiter = new Bottleneck({
-    reservoir: 100,
-    reservoirRefreshAmount: 100,
-    reservoirRefreshInterval: 30000,
-    maxConcurrent: 6,
+    reservoir: 120,
+    reservoirRefreshAmount: 120,
+    reservoirRefreshInterval: 60000,
+    maxConcurrent: 10,
 })
 
 /**
