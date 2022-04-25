@@ -20,12 +20,6 @@ module.exports = {
       commonjs: 'cross-fetch',
       commonjs2: 'cross-fetch',
       root: 'fetch'
-    },
-    'dom-parser': {
-      amd: 'dom-parser',
-      commonjs: 'dom-parser',
-      commonjs2: 'dom-parser',
-      root: 'DOMParser'
     }
   },
 }

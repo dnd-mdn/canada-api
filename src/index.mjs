@@ -1,5 +1,4 @@
 import fetch from 'cross-fetch'
-import DOMParser from 'dom-parser'
 import Bottleneck from 'bottleneck'
 
 const domain = 'www.canada.ca'
@@ -29,7 +28,7 @@ const months = {
  */
 function parseDate(date) {
     let m = /^\w{3} (\w{3}) (\d{2}) (\d{4}) ([\d:]{8}) GMT([\-+]\d{4})$/.exec(date)
-    return m ? new Date(m[3] + '-' + months[m[1]] + '-' + m[2] + 'T' + m[4] + m[5]) : date
+    return m ? new Date(m[3] + '-' + months[m[1]] + '-' + m[2] + 'T' + m[4] + m[5]).getTime() : date
 }
 
 /**
@@ -39,7 +38,7 @@ export const limiter = new Bottleneck({
     reservoir: 100,
     reservoirRefreshAmount: 100,
     reservoirRefreshInterval: 30000,
-    maxConcurrent: 5,
+    maxConcurrent: 6,
 })
 
 /**
@@ -125,12 +124,13 @@ export function children(node) {
         .then(verifyResponse)
         .then(response => response.text())
         .then(xml => {
-            // Parse XML document
-            let dom = new DOMParser().parseFromString(xml, 'text/xml')
-            return Array.from(dom.getElementsByTagName('url')).map(url => {
+            // Extract XML data
+            let locs = xml.match(/(?<=<loc>)[^<]+(?=<\/loc>)/g)
+            let mods = xml.match(/(?<=<lastmod>)[^<]+(?=<\/lastmod>)/g)
+            return locs.map((loc, index) => {
                 return {
-                    path: normalizePath(url.getElementsByTagName('loc')[0].textContent),
-                    lastmod: new Date(url.getElementsByTagName('lastmod')[0].textContent)
+                    path: normalizePath(loc),
+                    lastmod: new Date(mods[index]).getTime()
                 }
             })
         })
