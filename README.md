@@ -1,6 +1,6 @@
 # canada-api
 
-API for fetching data from [canada.ca](https://www.canada.ca).
+API for fetching public data from [canada.ca](https://www.canada.ca).  Implements rate limiting to prevent being throttled.
 
 ## Install
 
@@ -16,18 +16,16 @@ Will be published to npm once stable
 
 ## API
 
-### ca.children()
+### ca.children(node)
 
 Fetches listing of child nodes
 
-### ca.html()
+### ca.content(node)
 
-Fetches html of a node
+Fetches content of a node
 
-### ca.meta()
+### ca.meta(node)
 
 Fetches metadata of a node
 
-### ca.assetMeta()
-
-Fetches metadata of an asset
+Note: API also works for DAM assets
