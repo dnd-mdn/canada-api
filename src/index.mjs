@@ -66,8 +66,11 @@ function normalizePath(url) {
 
     if (url.pathname.startsWith('/content/dam/')) {
         return url.pathname
-    } else if (/^\/(en|fr)(\/|$)/.test(url.pathname)) {
-        return url.pathname.replace(/\.[^\.]+$/, '').replace(/\/$/, '')
+    } else if (/^\/(content\/canadasite\/)?(en|fr)(\/|$)/.test(url.pathname)) {
+        return url.pathname
+            .replace('/content/canadasite/', '/')
+            .replace(/\.[^\.]+$/, '')
+            .replace(/\/$/, '')
     }
 
     throw new Error('Invalid path ' + url)
