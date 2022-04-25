@@ -198,11 +198,3 @@ export function content(node) {
             return node
         })
 }
-
-
-
-
-//meta('en/department-national-defence/maple-leaf').then(console.log)
-//content('/en/department-national-defence/maple-leaf/defence/2022/04').then(console.log)
-//content('https://www.canada.ca/content/dam/dnd-mdn/images/maple-leaf/articles/2022/04/04-21-contacts-198x111.jpg').then(console.log)
-content('/content/dam/dnd-mdn/documents/json/maple-en.json').then(console.log)
