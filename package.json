@@ -1,7 +1,7 @@
 {
   "name": "canada-api",
   "version": "1.0.1",
-  "description": "API for fetching data from canada.ca",
+  "description": "Cross platform API to fetch data from canada.ca",
   "main": "dist/ca.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -12,6 +12,10 @@
     "type": "git",
     "url": "git+https://github.com/bsoicher/canada-api.git"
   },
+  "keywords": [
+    "canada",
+    "api"
+  ],
   "author": "Ben Soicher",
   "license": "MIT",
   "bugs": {
