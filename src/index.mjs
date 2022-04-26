@@ -1,5 +1,5 @@
 import fetch from 'cross-fetch'
-import Bottleneck from 'bottleneck'
+import Bottleneck from 'bottleneck/light.js'
 
 const domain = 'www.canada.ca'
 
@@ -131,12 +131,10 @@ export function children(node) {
             // Extract XML data
             let locs = xml.match(/(?<=<loc>)[^<]+(?=<\/loc>)/g)
             let mods = xml.match(/(?<=<lastmod>)[^<]+(?=<\/lastmod>)/g)
-            return locs.map((loc, index) => {
-                return {
-                    path: normalizePath(loc),
-                    lastmod: new Date(mods[index]).getTime()
-                }
-            })
+            return locs.map((loc, index) => ({
+                path: normalizePath(loc),
+                lastmod: new Date(mods[index]).getTime()
+            }))
         })
         .catch(err => {
             return err
