@@ -6,7 +6,7 @@ Cross platform API for fetching public data from [canada.ca](https://www.canada.
 
 ### Browsers
 
-    <script src="https://cdn.jsdelivr.net/npm/canada-api@1.0.0/dist/ca.js"><script>
+    <script src="https://cdn.jsdelivr.net/npm/canada-api@1.0.1/dist/ca.js"><script>
     <script>
         ca.meta("en/news").then(console.log)
     </script>
