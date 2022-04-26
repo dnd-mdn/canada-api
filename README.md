@@ -1,18 +1,18 @@
 # canada-api
 
-API for fetching public data from [canada.ca](https://www.canada.ca).  Implements rate limiting to prevent being throttled.
+Cross platform API for fetching public data from [canada.ca](https://www.canada.ca).
 
 ## Install
 
 ### Browsers
 
-    <script src="https://cdn.jsdelivr.net/gh/bsoicher/canada-api/dist/ca.js"><script>
+    <script src="https://cdn.jsdelivr.net/npm/canada-api@1.0.0/dist/ca.js"><script>
 
 Support: Edge 15+, Firefox 54+, Chrome 51+, Safari 10+
 
 ### Nodejs
 
-Will be published to npm once stable
+    npm install canada-api
 
 ## API
 
@@ -20,12 +20,10 @@ Will be published to npm once stable
 
 Fetches listing of child nodes
 
-### ca.content(node)
-
-Fetches content of a node
-
 ### ca.meta(node)
 
 Fetches metadata of a node
 
-Note: API also works for DAM assets
+### ca.content(node)
+
+Fetches content of a node
