@@ -53,7 +53,7 @@ Fetches content of a node, as text or json
 
 Returns: `Promise` Resolves: Object with `content` property
 
-##Arguments
+## Arguments
 
 All functions take a node argument which accepts a couple types
 
