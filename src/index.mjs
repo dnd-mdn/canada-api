@@ -127,19 +127,15 @@ export function children(node) {
     return limiter.schedule(() => fetch(formatURL(node.path, '.sitemap.xml')))
         .then(verifyResponse)
         .then(response => response.text())
-        .then(xml => {
-            return xml.match(/<url>.*?<\/url>/g).map(url => {
-                let loc = url.match(/<loc>([^<]+)<\/loc>/)
-                let mod = url.match(/<lastmod>([^<]+)<\/lastmod>/)
-                return {
-                    path: normalizePath(loc[1]),
-                    lastmod: mod ? new Date(mod[1]).getTime() : null
-                }
-            })
-        })
-        .catch(err => {
-            return err
-        })
+        .then(xml => xml.match(/<url>.*?<\/url>/g).map(url => {
+            let loc = url.match(/<loc>([^<]+)<\/loc>/)
+            let mod = url.match(/<lastmod>([^<]+)<\/lastmod>/)
+            return {
+                path: normalizePath(loc[1]),
+                lastmod: mod ? new Date(mod[1]).getTime() : null
+            }
+        }))
+        .catch(err => [])
 }
 
 /**
