@@ -128,13 +128,14 @@ export function children(node) {
         .then(verifyResponse)
         .then(response => response.text())
         .then(xml => {
-            // Extract XML data
-            let locs = xml.match(/(?<=<loc>)[^<]+(?=<\/loc>)/g)
-            let mods = xml.match(/(?<=<lastmod>)[^<]+(?=<\/lastmod>)/g)
-            return locs.map((loc, index) => ({
-                path: normalizePath(loc),
-                lastmod: new Date(mods[index]).getTime()
-            }))
+            return xml.match(/<url>.*?<\/url>/g).map(url => {
+                let loc = url.match(/<loc>([^<]+)<\/loc>/)
+                let mod = url.match(/<lastmod>([^<]+)<\/lastmod>/)
+                return {
+                    path: normalizePath(loc[1]),
+                    lastmod: mod ? new Date(mod[1]).getTime() : null
+                }
+            })
         })
         .catch(err => {
             return err
@@ -201,3 +202,4 @@ export function content(node) {
             return node
         })
 }
+
