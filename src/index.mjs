@@ -118,8 +118,7 @@ function verifyResponse(response) {
 /**
  * Get node children by parsing sitemaps
  * @param {string|Object} node 
- * @param {array} list Node list to extend
- * @returns {Object}
+ * @returns {Promise<Array>}
  */
 export function children(node) {
     node = normalizeNode(node)
@@ -141,7 +140,7 @@ export function children(node) {
 /**
  * Get node metadata
  * @param {string|Object} node 
- * @returns {Object}
+ * @returns {Promise<Object>}
  */
 export function meta(node) {
     node = normalizeNode(node)
@@ -175,7 +174,7 @@ export function meta(node) {
 /**
  * Get node content
  * @param {string|Object} node 
- * @returns {Object}
+ * @returns {Promise<Object>}
  */
 export function content(node) {
     node = normalizeNode(node)
