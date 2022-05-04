@@ -28,7 +28,7 @@ const months = {
  */
 function parseDate(date) {
     let m = /^\w{3} (\w{3}) (\d{2}) (\d{4}) ([\d:]{8}) GMT([\-+]\d{4})$/.exec(date)
-    return m ? new Date(m[3] + '-' + months[m[1]] + '-' + m[2] + 'T' + m[4] + m[5]).getTime() : date
+    return m ? Date.parse(m[3] + '-' + months[m[1]] + '-' + m[2] + 'T' + m[4] + m[5]) : date
 }
 
 /**
@@ -116,7 +116,7 @@ function verifyResponse(response) {
 }
 
 /**
- * Get node children
+ * Get node children by parsing sitemaps
  * @param {string|Object} node 
  * @param {array} list Node list to extend
  * @returns {Object}
@@ -132,10 +132,10 @@ export function children(node) {
             let mod = url.match(/<lastmod>([^<]+)<\/lastmod>/)
             return {
                 path: normalizePath(loc[1]),
-                lastmod: mod ? new Date(mod[1]).getTime() : null
+                lastmod: mod ? Date.parse(mod[1]) : null
             }
         }))
-        .catch(err => [])
+        .catch(() => [])
 }
 
 /**
