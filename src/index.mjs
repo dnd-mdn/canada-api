@@ -95,20 +95,17 @@ function normalizeNode(node) {
 }
 
 /**
- * Verify if fetch succeeded
+ * Verify response properties
  * @param {Response} response
- * @throws {Error} Fetch failed to load as expected
+ * @throws {Error} Bad response detected
  * @returns {Response}
  */
 function verifyResponse(response) {
     if (!response.ok) {
-        // Bad http response
         throw new Error(response.statusText)
     } else if (!response.url.includes(domain)) {
-        // Redirected outside of domain
         throw new Error('Redirect')
-    } else if (response.url.includes('/errors/404.html')) {
-        // 404 document was loaded
+    } else if (response.url.includes('/404.html')) {
         throw new Error('Not Found')
     }
 
@@ -116,9 +113,9 @@ function verifyResponse(response) {
 }
 
 /**
- * Get node children by parsing sitemaps
+ * Get node children from XML sitemap
  * @param {string|Object} node 
- * @returns {Promise<Array>}
+ * @returns {Promise<Object>}
  */
 export function children(node) {
     node = normalizeNode(node)
@@ -126,15 +123,17 @@ export function children(node) {
     return limiter.schedule(() => fetch(formatURL(node.path, '.sitemap.xml')))
         .then(verifyResponse)
         .then(response => response.text())
-        .then(xml => xml.match(/<url>.*?<\/url>/g).map(url => {
-            let loc = url.match(/<loc>([^<]+)<\/loc>/)
-            let mod = url.match(/<lastmod>([^<]+)<\/lastmod>/)
-            return {
-                path: normalizePath(loc[1]),
-                lastmod: mod ? Date.parse(mod[1]) : null
-            }
-        }))
-        .catch(() => [])
+        .then(xml => {
+            node.children = xml.match(/<url>.*?<\/url>/g).map(url => {
+                let loc = url.match(/<loc>([^<]+)<\/loc>/)
+                let mod = url.match(/<lastmod>([^<]+)<\/lastmod>/)
+                return {
+                    path: normalizePath(loc[1]),
+                    lastmod: mod ? Date.parse(mod[1]) : null
+                }
+            })
+            return node
+        })
 }
 
 /**
@@ -163,10 +162,6 @@ export function meta(node) {
             }
 
             node.meta = meta
-            return node
-        })
-        .catch(err => {
-            node.meta = err
             return node
         })
 }
