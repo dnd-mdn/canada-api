@@ -27,9 +27,7 @@ const months = {
  * @returns {Date}
  */
 function maybeParseDate(date) {
-    let m = date.match(/^[\d\-]{10}$/)
-
-    if (m) {
+    if (/^\d{4}-\d{2}-\d{2}$/.test(date)) {
         return Date.parse(date)
     }
 
@@ -37,6 +35,7 @@ function maybeParseDate(date) {
 
     return m ? Date.parse(m[3] + '-' + months[m[1]] + '-' + m[2] + 'T' + m[4] + m[5]) : date
 }
+
 
 /**
  * Throttles requests to prevent being throttled by the server
@@ -47,6 +46,9 @@ export const limiter = new Bottleneck({
     reservoirRefreshInterval: 60000,
     maxConcurrent: 10,
 })
+
+
+meta('en').then(console.log)
 
 /**
  * Format fetch URL
