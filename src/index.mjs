@@ -24,13 +24,15 @@ const months = {
 /**
  * Parse date in RFC1123 format
  * @param {string} date
- * @returns {Date}
+ * @returns {Number}
  */
 function maybeParseDate(date) {
+    // Basic
     if (/^\d{4}-\d{2}-\d{2}$/.test(date)) {
         return Date.parse(date)
     }
 
+    // RFC1123
     m = /^\w{3} (\w{3}) (\d{2}) (\d{4}) ([\d:]{8}) GMT([\-+]\d{4})$/.exec(date)
     return m ? Date.parse(m[3] + '-' + months[m[1]] + '-' + m[2] + 'T' + m[4] + m[5]) : date
 }
