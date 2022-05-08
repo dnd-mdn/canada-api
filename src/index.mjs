@@ -26,8 +26,15 @@ const months = {
  * @param {string} date
  * @returns {Date}
  */
-function parseDate(date) {
-    let m = /^\w{3} (\w{3}) (\d{2}) (\d{4}) ([\d:]{8}) GMT([\-+]\d{4})$/.exec(date)
+function maybeParseDate(date) {
+    let m = date.match(/^[\d\-]{10}$/)
+
+    if (m) {
+        return Date.parse(date)
+    }
+
+    m = /^\w{3} (\w{3}) (\d{2}) (\d{4}) ([\d:]{8}) GMT([\-+]\d{4})$/.exec(date)
+
     return m ? Date.parse(m[3] + '-' + months[m[1]] + '-' + m[2] + 'T' + m[4] + m[5]) : date
 }
 
@@ -97,7 +104,7 @@ function normalizeNode(node) {
 /**
  * Verify response properties
  * @param {Response} response
- * @throws {Error} Bad response detected
+ * @throws {Error} Bad response
  * @returns {Response}
  */
 function verifyResponse(response) {
@@ -114,7 +121,7 @@ function verifyResponse(response) {
 
 /**
  * Get node children from XML sitemap
- * @param {string|Object} node 
+ * @param {string|Object} node
  * @returns {Promise<Object>}
  */
 export function children(node) {
@@ -124,6 +131,7 @@ export function children(node) {
         .then(verifyResponse)
         .then(response => response.text())
         .then(xml => {
+            // Parse XML
             node.children = xml.match(/<url>.*?<\/url>/g).map(url => {
                 let loc = url.match(/<loc>([^<]+)<\/loc>/)
                 let mod = url.match(/<lastmod>([^<]+)<\/lastmod>/)
@@ -132,13 +140,19 @@ export function children(node) {
                     lastmod: mod ? Date.parse(mod[1]) : null
                 }
             })
+
+            // First entry may be the input node
+            if (node.children.length && node.children[0].path === node.path) {
+                node.lastmod = node.children.shift().lastmod
+            }
+
             return node
         })
 }
 
 /**
- * Get node metadata
- * @param {string|Object} node 
+ * Get node metadata from jcr content
+ * @param {string|Object} node
  * @returns {Promise<Object>}
  */
 export function meta(node) {
@@ -148,18 +162,18 @@ export function meta(node) {
         .then(verifyResponse)
         .then(response => response.json())
         .then(meta => {
-            // Format properties
-            for (var key in meta) {
+            // Reformat some meta properties
+            Object.keys(meta).forEach(key => {
                 if (meta[key] === 'true') {
                     meta[key] = true
                 } else if (meta[key] === 'false') {
                     meta[key] = false
                 } else if (key.endsWith('@TypeHint')) {
                     delete meta[key]
-                } else if (typeof meta[key] === 'string' && meta[key].length === 33) {
-                    meta[key] = parseDate(meta[key])
+                } else if (typeof meta[key] === 'string') {
+                    meta[key] = maybeParseDate(meta[key])
                 }
-            }
+            })
 
             node.meta = meta
             return node
@@ -187,9 +201,4 @@ export function content(node) {
             node.content = content
             return node
         })
-        .catch(err => {
-            node.content = err
-            return node
-        })
 }
-
