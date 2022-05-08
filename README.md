@@ -5,7 +5,7 @@ Cross platform API for fetching public data from [canada.ca](https://www.canada.
 ## Install
 ### Browsers
 
-    <script src="https://cdn.jsdelivr.net/npm/canada-api@1.0.3"><script>
+    <script src="https://cdn.jsdelivr.net/npm/canada-api@1.1.0"><script>
 
 ### Nodejs
 
@@ -31,7 +31,7 @@ Uses sitemaps to fetch an array of child nodes
     ca.children("/en/department-national-defence/maple-leaf")
     ca.children("/fr/ministere-defense-nationale/feuille-derable")
 
-Returns: `Promise` Resolves: Array of objects with `path` properties
+Returns: `Promise` Resolves: node object with `children` property
 
 Only for page nodes, other types return an error `Not Found`
 
@@ -42,7 +42,7 @@ Fetches metadata of a node
     ca.meta("/en/department-national-defence/maple-leaf")
     ca.meta("/content/dam/dnd-mdn/images/maple-leaf/ml-logo.jpg")
 
-Returns: `Promise` Resolves: Object with `meta` property
+Returns: `Promise` Resolves: node object with `meta` property
 
 ### ca.content(node)
 
@@ -51,7 +51,7 @@ Fetches content of a node, as text or json
     ca.content("/en/department-national-defence/maple-leaf")
     ca.content("/content/dam/dnd-mdn/documents/json/maple-en.json")
 
-Returns: `Promise` Resolves: Object with `content` property
+Returns: `Promise` Resolves: node object with `content` property
 
 ## Arguments
 
@@ -62,7 +62,6 @@ All functions take a node argument which accepts a couple types
 Valid path strings include:
 
     en/department-national-defence
-    /en/department-national-defence/
     /en/department-national-defence.html
     /en/department-national-defence?param=ignored
     
