@@ -63,7 +63,7 @@ function formatURL(path, suffix) {
  * @throws {Error} Invalid path
  * @returns {string}
  */
-function normalizePath(url) {
+export function normalizePath(url) {
     url = new URL(url, 'https://' + domain)
 
     if (url.hostname !== domain) {
@@ -89,7 +89,7 @@ function normalizePath(url) {
  * @throws {Error} Invalid node
  * @returns {Object}
  */
-function normalizeNode(node) {
+export function normalizeNode(node) {
     if (typeof node === 'string') {
         return { path: normalizePath(node) }
     } else if (typeof node === 'object' && typeof node.path === 'string') {

@@ -53,6 +53,10 @@ Fetches content of a node, as text or json
 
 Returns: `Promise` Resolves: node object with `content` property
 
+### ca.normalizeNode
+### ca.normalizePath
+
+
 ## Arguments
 
 All functions take a node argument which accepts a couple types
