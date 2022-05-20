@@ -45,6 +45,7 @@ export const limiter = new Bottleneck({
     reservoirRefreshAmount: 120,
     reservoirRefreshInterval: 60000,
     maxConcurrent: 10,
+    trackDoneStatus: true
 })
 
 /**
