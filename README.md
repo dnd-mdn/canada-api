@@ -5,7 +5,7 @@ Cross platform API for fetching public data from [canada.ca](https://www.canada.
 ## Install
 ### Browsers
 
-    <script src="https://cdn.jsdelivr.net/npm/canada-api@1.1.4"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canada-api@1.1.5"></script>
 
 ### Nodejs
 
