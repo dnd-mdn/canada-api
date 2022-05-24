@@ -127,7 +127,7 @@ function verifyResponse(response) {
 export function children(node) {
     node = normalizeNode(node)
 
-    return limiter.schedule(() => fetch(formatURL(node.path, '.sitemap.xml')))
+    return limiter.schedule({ expiration: 60000, priority: 4 }, fetch, formatURL(node.path, '.sitemap.xml'))
         .then(verifyResponse)
         .then(response => response.text())
         .then(xml => {
@@ -150,6 +150,7 @@ export function children(node) {
         })
 }
 
+
 /**
  * Get node metadata from jcr content
  * @param {string|Object} node
@@ -158,7 +159,7 @@ export function children(node) {
 export function meta(node) {
     node = normalizeNode(node)
 
-    return limiter.schedule(() => fetch(formatURL(node.path, '/jcr:content.json')))
+    return limiter.schedule({ expiration: 30000 }, fetch, formatURL(node.path, '/jcr:content.json'))
         .then(verifyResponse)
         .then(response => response.json())
         .then(meta => {
@@ -189,7 +190,7 @@ export function content(node) {
     node = normalizeNode(node)
     let suffix = node.path.startsWith('/content/dam/') ? '' : '.html'
 
-    return limiter.schedule(() => fetch(formatURL(node.path, suffix)))
+    return limiter.schedule({ expiration: 30000 }, fetch, formatURL(node.path, suffix))
         .then(verifyResponse)
         .then(response => {
             if (response.headers.get('Content-Type').includes('application/json')) {
