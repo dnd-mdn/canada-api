@@ -41,9 +41,9 @@ function maybeParseDate(date) {
  * Throttles requests to prevent being throttled by the server
  */
 export const limiter = new Bottleneck({
-    reservoir: 120,
-    reservoirRefreshAmount: 120,
-    reservoirRefreshInterval: 60000,
+    reservoir: 150,
+    reservoirRefreshAmount: 150,
+    reservoirRefreshInterval: 5000,
     maxConcurrent: 10,
     trackDoneStatus: true
 })

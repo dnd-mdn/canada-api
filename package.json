@@ -1,6 +1,6 @@
 {
   "name": "canada-api",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "description": "Cross platform API to fetch data from canada.ca",
   "browser": "dist/ca.js",
   "main": "src/index.mjs",
