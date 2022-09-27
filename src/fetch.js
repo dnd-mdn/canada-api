@@ -1,12 +1,12 @@
-import crossFetch from 'cross-fetch'
-import Bottleneck from 'bottleneck/light.js'
+const crossFetch = require('cross-fetch')
+const Bottleneck = require('bottleneck/light.js')
 
 /**
  * Default limiter options
  * @see https://stackleap.io/js/bottleneck#user-content-constructor
  * @const {object}
  */
-export const limiterOptions = {
+const limiterOptions = {
     reservoir: 150,
     reservoirRefreshAmount: 150,
     reservoirRefreshInterval: 5000,
@@ -16,15 +16,15 @@ export const limiterOptions = {
 
 /**
  * Rate limiter
- * @const {Bottleneck}
+ * @type {Bottleneck}
  */
-export const limiter = new Bottleneck(limiterOptions)
+const limiter = new Bottleneck(limiterOptions)
 
 /**
- * Rate limited fetch
+ * Passthrough arguments to prevent running method on non window object
  * @const {function}
  */
-export const fetchLimit = limiter.wrap((url, options) => crossFetch(url, options))
+const passthrough = (url, options) => crossFetch(url, options)
 
 /**
  * Modified rate limited fetch
@@ -32,9 +32,9 @@ export const fetchLimit = limiter.wrap((url, options) => crossFetch(url, options
  * @param {object} [options] Fetch options
  * @returns {Promise<Response>}
  */
-export async function fetch(url, options) {
+const fetch = async (url, options) => {
    
-    let response = await fetchLimit.withOptions(options?.jobOptions, url, options)
+    let response = await limiter.schedule(options?.jobOptions || {}, passthrough, url, options)
 
     // Verify response
     if (!response.ok) {
@@ -53,4 +53,8 @@ export async function fetch(url, options) {
     return response
 }
 
-export default fetch
+// Default export
+module.exports = exports = fetch
+
+// Expose the limiter
+exports.limiter = limiter

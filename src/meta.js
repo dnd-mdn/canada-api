@@ -1,6 +1,6 @@
-import merge from 'merge-options'
-import fetch from './fetch.mjs'
-import normalize from './normalize.mjs'
+const normalize = require('./normalize.js')
+const merge = require('merge-options')
+const fetch = require('./fetch.js')
 
 /**
  * Default fetch options
@@ -18,7 +18,7 @@ const defaultOptions = {
  * @param {Object} [options] fetch options
  * @returns {Promise<Object>}
  */
-export async function meta(url, options)  {
+const meta = async (url, options) => {
     url = normalize(url, 'meta')
     options = merge(defaultOptions, options)
 
@@ -81,4 +81,4 @@ function maybeParseDate(date) {
     return date
 }
 
-export default meta
+module.exports = exports = meta

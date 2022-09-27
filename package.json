@@ -1,9 +1,9 @@
 {
   "name": "canada-api",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "description": "Cross platform API to fetch data from canada.ca",
   "browser": "dist/ca.js",
-  "main": "src/index.mjs",
+  "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "webpack",

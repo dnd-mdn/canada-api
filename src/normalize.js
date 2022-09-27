@@ -3,7 +3,7 @@
  * Base URL
  * @const {string}
  */
-export const baseURL = 'https://www.canada.ca/'
+const baseURL = 'https://www.canada.ca/'
 
 /**
  * Normalize AEM URL
@@ -11,7 +11,7 @@ export const baseURL = 'https://www.canada.ca/'
  * @param {string} [type=path]
  * @returns {string}
  */
-export function normalize(url, type = 'path') {
+const normalize = (url, type = 'path') => {
 
     if (typeof url === 'string') {
         url = new URL(url, baseURL)
@@ -117,4 +117,4 @@ function normalizeReference(url, type) {
     return url.href
 }
 
-export default normalize
+module.exports = exports = normalize

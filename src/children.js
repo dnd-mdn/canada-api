@@ -1,6 +1,6 @@
-import merge from 'merge-options'
-import fetch from './fetch.mjs'
-import normalize from './normalize.mjs'
+const normalize = require('./normalize.js')
+const merge = require('merge-options')
+const fetch = require('./fetch.js')
 
 /**
  * Default fetch options
@@ -18,7 +18,7 @@ const defaultOptions = {
  * @param {Object} [options] fetch options
  * @returns {Promise<Array>}
  */
-export async function children(url, options) {
+const children = async (url, options) => {
     url = normalize(url, 'children')
     options = merge(defaultOptions, options)
     
@@ -44,4 +44,4 @@ export async function children(url, options) {
     return children
 }
 
-export default children
+module.exports = exports = children
