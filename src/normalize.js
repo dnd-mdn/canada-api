@@ -2,6 +2,7 @@
 /**
  * Base URL
  * @const {string}
+ * @private
  */
 const baseURL = 'https://www.canada.ca/'
 
@@ -62,6 +63,7 @@ const normalize = (url, type = 'path') => {
  * @param {URL} url
  * @param {string} type
  * @returns {URL}
+ * @private
  */
 function normalizePage(url, type) {
     // Remove existing extension
@@ -83,6 +85,7 @@ function normalizePage(url, type) {
  * @param {URL} url
  * @param {string} type
  * @returns {URL}
+ * @private
  */
 function normalizeAsset(url, type) {
     let isDir = /(\/|\/\w+)$/.test(url.pathname)
@@ -103,6 +106,7 @@ function normalizeAsset(url, type) {
  * @param {URL} url
  * @param {string} type
  * @returns {URL}
+ * @private
  */
 function normalizeReference(url, type) {
 

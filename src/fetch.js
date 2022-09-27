@@ -5,6 +5,7 @@ const Bottleneck = require('bottleneck/light.js')
  * Default limiter options
  * @see https://stackleap.io/js/bottleneck#user-content-constructor
  * @const {object}
+ * @private
  */
 const limiterOptions = {
     reservoir: 150,
@@ -23,6 +24,7 @@ const limiter = new Bottleneck(limiterOptions)
 /**
  * Passthrough arguments to prevent running method on non window object
  * @const {function}
+ * @private
  */
 const passthrough = (url, options) => crossFetch(url, options)
 

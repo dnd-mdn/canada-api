@@ -5,6 +5,7 @@ const fetch = require('./fetch.js')
 /**
  * Default fetch options
  * @const {object}
+ * @private
  */
 const defaultOptions = {
     jobOptions: {

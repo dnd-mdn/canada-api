@@ -5,6 +5,7 @@ const fetch = require('./fetch.js')
 /**
  * Default fetch options
  * @const {object}
+ * @private
  */
 const defaultOptions = {
     jobOptions: {
@@ -55,6 +56,7 @@ const meta = async (url, options) => {
 /**
  * Map month name to number
  * @const {object}
+ * @private
  */
 const months = {
     'Jan': '01', 'Feb': '02', 'Mar': '03', 'Apr': '04', 'May': '05', 'Jun': '06',
@@ -65,6 +67,7 @@ const months = {
  * Try to parse a date
  * @param {string} date
  * @returns {number|string}
+ * @private
  */
 function maybeParseDate(date) {
     // Simple
