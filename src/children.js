@@ -21,7 +21,7 @@ const defaultOptions = {
 const children = async (url, options) => {
     url = normalize(url, 'children')
     options = merge(defaultOptions, options)
-    
+
     let response = await fetch(url, options)
     let xml = await response.text()
 

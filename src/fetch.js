@@ -33,7 +33,7 @@ const passthrough = (url, options) => crossFetch(url, options)
  * @returns {Promise<Response>}
  */
 const fetch = async (url, options) => {
-   
+
     let response = await limiter.schedule(options?.jobOptions || {}, passthrough, url, options)
 
     // Verify response
@@ -49,7 +49,7 @@ const fetch = async (url, options) => {
     if (url.hostname !== new URL(response.url).hostname) {
         throw new Error('Redirect to invalid host')
     }
-    
+
     return response
 }
 

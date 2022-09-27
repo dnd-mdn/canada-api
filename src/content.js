@@ -21,7 +21,7 @@ const defaultOptions = {
 const content = async (url, options) => {
     url = normalize(url, 'content')
     options = merge(defaultOptions, options)
-    
+
     let response = await fetch(url, options)
     let type = response.headers.get('Content-Type')
 
@@ -34,7 +34,7 @@ const content = async (url, options) => {
     // Compress whitespace in html
     if (type.includes('text/html')) {
         text = text.replace(/\s+/g, ' ')
-    } 
+    }
 
     return text
 }
