@@ -21,13 +21,13 @@ export const limiterOptions = {
 export const limiter = new Bottleneck(limiterOptions)
 
 /**
- * Rate limited standard fetch
+ * Rate limited fetch
  * @const {function}
  */
-export const fetchLimit = limiter.wrap(crossFetch)
+export const fetchLimit = limiter.wrap((url, options) => crossFetch(url, options))
 
 /**
- * Rate limited custom fetch
+ * Modified rate limited fetch
  * @param {string|URL} url
  * @param {object} [options] Fetch options
  * @returns {Promise<Response>}

@@ -5,7 +5,7 @@ Cross platform API for fetching public data from [canada.ca](https://www.canada.
 ## Install
 ### Browsers
 
-    <script src="https://cdn.jsdelivr.net/npm/canada-api@2.0.1"></script>
+    <script src="https://cdn.jsdelivr.net/npm/canada-api@2.0.2"></script>
     <script>
         ca.meta("en/department-national-defence").then(meta => {
             console.log(meta)
