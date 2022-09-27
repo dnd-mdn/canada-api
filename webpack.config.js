@@ -21,5 +21,5 @@ module.exports = {
       commonjs2: 'cross-fetch',
       root: 'fetch'
     }
-  },
+  }
 }
