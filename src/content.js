@@ -7,19 +7,15 @@ const fetch = require('./fetch.js')
  * @const {object}
  * @private
  */
-const defaultOptions = {
-    jobOptions: {
-        priority: 0
-    }
-}
+const defaultOptions = {}
 
 /**
  * Get node content
- * @param {string} url node url
+ * @param {string} url node URL
  * @param {Object} [options] fetch options
  * @returns {Promise<any>}
  */
-const content = async (url, options) => {
+const content = async (url, options = {}) => {
     url = normalize(url, 'content')
     options = merge(defaultOptions, options)
 
@@ -40,4 +36,5 @@ const content = async (url, options) => {
     return text
 }
 
+// Default export
 module.exports = exports = content

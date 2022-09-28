@@ -84,4 +84,5 @@ function maybeParseDate(date) {
     return date
 }
 
+// Default export
 module.exports = exports = meta

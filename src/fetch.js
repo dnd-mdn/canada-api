@@ -1,3 +1,4 @@
+const baseURL = require('./normalize').baseURL
 const crossFetch = require('cross-fetch')
 const Bottleneck = require('bottleneck/light.js')
 
@@ -17,16 +18,17 @@ const limiterOptions = {
 
 /**
  * Rate limiter
- * @type {Bottleneck}
+ * @const {Bottleneck}
  */
 const limiter = new Bottleneck(limiterOptions)
 
 /**
  * Passthrough arguments to prevent running method on non window object
- * @const {function}
+ * @param {string|URL} url
+ * @param {object} [options] Fetch options
  * @private
  */
-const passthrough = (url, options) => crossFetch(url, options)
+const pFetch = (url, options) => crossFetch(url, options)
 
 /**
  * Modified rate limited fetch
@@ -35,20 +37,16 @@ const passthrough = (url, options) => crossFetch(url, options)
  * @returns {Promise<Response>}
  */
 const fetch = async (url, options) => {
+    let jobOptions = options?.jobOptions || {}
+    let response = await limiter.schedule(jobOptions, pFetch, url, options)
 
-    let response = await limiter.schedule(options?.jobOptions || {}, passthrough, url, options)
-
-    // Verify response
+    // Verify response code
     if (!response.ok) {
         throw new Error(response.statusText)
     }
 
-    if (typeof url === 'string') {
-        url = new URL(url)
-    }
-
-    // Prevent host redirect
-    if (url.hostname !== new URL(response.url).hostname) {
+    // Verify destination
+    if (!response.url.startsWith(baseURL)) {
         throw new Error('Redirect to invalid host')
     }
 

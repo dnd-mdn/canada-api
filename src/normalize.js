@@ -121,4 +121,8 @@ function normalizeReference(url, type) {
     return url.href
 }
 
+// Default export
 module.exports = exports = normalize
+
+// Expose the baseURL
+exports.baseURL = baseURL

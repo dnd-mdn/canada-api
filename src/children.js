@@ -45,4 +45,5 @@ const children = async (url, options) => {
     return children
 }
 
+// Default export
 module.exports = exports = children
