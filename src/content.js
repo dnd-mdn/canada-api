@@ -22,13 +22,14 @@ const content = async (url, options = {}) => {
     options = merge(defaultOptions, options)
 
     let response = await fetch(url, options)
-    let type = response.headers.get('Content-Type')
 
     // Return raw text
     if (options.rawContent) {
         return await response.text()
     }
 
+    let type = response.headers.get('Content-Type')
+    
     if (type.includes('/json')) {
         return response.json()
     }

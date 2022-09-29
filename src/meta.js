@@ -26,16 +26,17 @@ const meta = async (url, options) => {
 
     let response = await fetch(url, options)
 
-    if (!response.headers.get('content-type').includes('/json')) {
+    // Return raw text
+    if (options.rawContent) {
+        return await response.text()
+    }
+
+    // Verify content-type
+    if (!response.headers.get('content-type').includes('application/json')) {
         throw new Error('Unexpected response content-type')
     }
 
     let json = await response.json()
-
-    // Return raw json
-    if (options.rawContent) {
-        return json
-    }
 
     // Format meta properties
     Object.keys(json).forEach(key => {

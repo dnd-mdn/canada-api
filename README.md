@@ -2,7 +2,7 @@
 
 [![NPM Version](https://img.shields.io/npm/v/canada-api?branch=main)](https://www.npmjs.com/package/canada-api) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/dnd-mdn/canada-api/blob/main/LICENSE.md)
 
-Cross platform API for fetching public data from [canada.ca](https://www.canada.ca). 🇨🇦
+Cross platform API for fetching public data from [canada.ca](https://www.canada.ca).
 
 ## Install
 ### Browsers
@@ -78,11 +78,11 @@ Parses sitemaps to get a list of child nodes.
 - `url` {string|URL} absolute or relative URL
 - `options` {Object} fetch [options](https://developer.mozilla.org/en-US/docs/Web/API/fetch#options)
     - `jobOptions` {Object} rate limiter [job options](https://github.com/SGrondin/bottleneck#job-options)
-    - `rawContent` {boolean} Fulfills with unmodified text {string} **Default:** `false`
+    - `rawContent` {boolean} Fulfills with unmodified {string} **Default:** `false`
 - Returns: {Promise} Fulfills with {string|Object}
 
 Retrieves the document contents.  The result depends on the `content-type` header of {Response}:
-- `'json'` parses response and fulfills with {Object}
+- `'application/json'` parses response and fulfills with {Object}
 - `'text/html'` compresses whitespace and fulfills with {string}
 - Other types are fulfilled as {string} with no modification
 
@@ -92,10 +92,10 @@ Retrieves the document contents.  The result depends on the `content-type` heade
 - `url` {string|URL} absolute or relative URL
 - `options` {Object} fetch [options](https://developer.mozilla.org/en-US/docs/Web/API/fetch#options)
     - `jobOptions` {Object} rate limiter [job options](https://github.com/SGrondin/bottleneck#job-options)
-    - `rawContent` {boolean} Fulfills with unmodified json {Object} **Default:** `false`
+    - `rawContent` {boolean} Fulfills with unmodified {string} **Default:** `false`
 - Returns: {Promise} Fulfills with {Object} with metadata properties
 
-Nodes contain a variety of metadata properties that can be accessed through a public API. Some properties are reformatted for consistency. A separate document will be created as a reference for the most useful ones.
+Nodes contain a variety of metadata properties that can be accessed through a public API. Some properties are reformatted for consistency if `rawContent` option is `false`. A separate document will be created as a reference for the most useful ones.
 
 
 ## Extended API
