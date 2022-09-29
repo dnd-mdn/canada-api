@@ -30,12 +30,12 @@ const meta = async (url, options) => {
         throw new Error('Unexpected response content-type')
     }
 
-    // Return raw text
-    if (options.rawContent) {
-        return await response.text()
-    }
-
     let json = await response.json()
+
+    // Return raw json
+    if (options.rawContent) {
+        return json
+    }
 
     // Format meta properties
     Object.keys(json).forEach(key => {

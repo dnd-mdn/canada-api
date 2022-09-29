@@ -92,7 +92,7 @@ Retrieves the document contents.  The result depends on the `content-type` heade
 - `url` {string|URL} absolute or relative URL
 - `options` {Object} fetch [options](https://developer.mozilla.org/en-US/docs/Web/API/fetch#options)
     - `jobOptions` {Object} rate limiter [job options](https://github.com/SGrondin/bottleneck#job-options)
-    - `rawContent` {boolean} Fulfills with unmodified text {string} **Default:** `false`
+    - `rawContent` {boolean} Fulfills with unmodified json {Object} **Default:** `false`
 - Returns: {Promise} Fulfills with {Object} with metadata properties
 
 Nodes contain a variety of metadata properties that can be accessed through a public API. Some properties are reformatted for consistency. A separate document will be created as a reference for the most useful ones.
