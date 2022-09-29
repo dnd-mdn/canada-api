@@ -8,7 +8,7 @@ Cross platform API for fetching public data from [canada.ca](https://www.canada.
 ### Browsers
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/canada-api@2.0.3"></script>
+<script src="https://cdn.jsdelivr.net/npm/canada-api@2.0.4"></script>
 <script>
     ca.meta("en/department-national-defence").then(meta => {
         console.log(meta)
