@@ -92,8 +92,3 @@ function maybeParseDate(date) {
 
 // Default export
 module.exports = exports = meta
-
-
-meta('en', {
-    rawResponse: true
-}).then(console.log)
