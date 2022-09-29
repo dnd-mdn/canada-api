@@ -8,6 +8,7 @@ const fetch = require('./fetch.js')
  * @private
  */
 const defaultOptions = {
+    rawContent: false,
     jobOptions: {
         expiration: 30000
     }
@@ -27,6 +28,11 @@ const meta = async (url, options) => {
 
     if (!response.headers.get('content-type').includes('/json')) {
         throw new Error('Unexpected response content-type')
+    }
+
+    // Return raw text
+    if (options.rawContent) {
+        return await response.text()
     }
 
     let json = await response.json()
@@ -86,3 +92,8 @@ function maybeParseDate(date) {
 
 // Default export
 module.exports = exports = meta
+
+
+meta('en', {
+    rawResponse: true
+}).then(console.log)

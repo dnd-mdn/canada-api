@@ -7,7 +7,9 @@ const fetch = require('./fetch.js')
  * @const {object}
  * @private
  */
-const defaultOptions = {}
+const defaultOptions = {
+    rawContent: false
+}
 
 /**
  * Get node content
@@ -21,6 +23,11 @@ const content = async (url, options = {}) => {
 
     let response = await fetch(url, options)
     let type = response.headers.get('Content-Type')
+
+    // Return raw text
+    if (options.rawContent) {
+        return await response.text()
+    }
 
     if (type.includes('/json')) {
         return response.json()

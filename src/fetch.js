@@ -47,7 +47,7 @@ const fetch = async (url, options) => {
 
     // Verify destination
     if (!response.url.startsWith(baseURL)) {
-        throw new Error('Redirect to invalid host')
+        throw new Error('Invalid destination URL')
     }
 
     return response

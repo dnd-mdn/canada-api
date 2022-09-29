@@ -34,7 +34,7 @@ ca.meta("en/department-national-defence")
     - `jobOptions` {Object} rate limiter [job options](https://github.com/SGrondin/bottleneck#job-options)
 - Returns: {Promise} Fulfills with {Response} upon success
 
-Uses [cross-fetch](https://github.com/lquixada/cross-fetch#readme) for a universal [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/fetch) implementation. Calls are rate limited to avoid hitting request limits that result in throttling. Throws {Error} if the request does not complete successfully or if the destination URL is not on [canada.ca](https://www.canada.ca).
+Uses [cross-fetch](https://github.com/lquixada/cross-fetch#readme) for a universal [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/fetch) implementation. Calls are rate limited to avoid hitting request limits that result in throttling. Throws an {Error} if the request does not complete successfully or if the destination URL is not on [canada.ca](https://www.canada.ca).
 
 
 ### `ca.fetch.limiter`
@@ -50,7 +50,7 @@ The [Rate limiter](https://github.com/SGrondin/bottleneck#readme) used in `ca.fe
 - `type` {string} Possible values `'path'`, `'children'`, `'content'` or `'meta'`. **Default**: `'path'`
 - Returns: {string} Normalized path or URL
 
-Validates and formats www.canada.ca URLs based on type. URLs can take many forms, so not all options will be valid. Throws an error if the URL is invalid, or the type requested is not possible.
+Validates and formats [canada.ca](https://www.canada.ca) URLs based on type. URLs can take many forms, so not all options will be valid. Throws an {Error} if the URL is invalid, or the type requested is not possible.
 
 
 ### `ca.normalize.baseURL`
@@ -78,6 +78,7 @@ Parses sitemaps to get a list of child nodes.
 - `url` {string|URL} absolute or relative URL
 - `options` {Object} fetch [options](https://developer.mozilla.org/en-US/docs/Web/API/fetch#options)
     - `jobOptions` {Object} rate limiter [job options](https://github.com/SGrondin/bottleneck#job-options)
+    - `rawContent` {boolean} Fulfills with unmodified text {string} **Default:** `false`
 - Returns: {Promise} Fulfills with {string|Object}
 
 Retrieves the document contents.  The result depends on the `content-type` header of {Response}:
@@ -91,6 +92,7 @@ Retrieves the document contents.  The result depends on the `content-type` heade
 - `url` {string|URL} absolute or relative URL
 - `options` {Object} fetch [options](https://developer.mozilla.org/en-US/docs/Web/API/fetch#options)
     - `jobOptions` {Object} rate limiter [job options](https://github.com/SGrondin/bottleneck#job-options)
+    - `rawContent` {boolean} Fulfills with unmodified text {string} **Default:** `false`
 - Returns: {Promise} Fulfills with {Object} with metadata properties
 
 Nodes contain a variety of metadata properties that can be accessed through a public API. Some properties are reformatted for consistency. A separate document will be created as a reference for the most useful ones.
