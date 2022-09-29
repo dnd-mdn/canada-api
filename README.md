@@ -1,41 +1,46 @@
 # canada-api
 
+[![NPM Version](https://img.shields.io/npm/v/canada-api?branch=main)](https://www.npmjs.com/package/cross-fetch) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/dnd-mdn/canada-api/blob/main/LICENSE.md)
+
 Cross platform API for fetching public data from [canada.ca](https://www.canada.ca).
 
 ## Install
 ### Browsers
 
-    <script src="https://cdn.jsdelivr.net/npm/canada-api@2.0.3"></script>
-    <script>
-        ca.meta("en/department-national-defence").then(meta => {
-            console.log(meta)
-        })
-    </script>
+```html
+<script src="https://cdn.jsdelivr.net/npm/canada-api@2.0.3"></script>
+<script>
+    ca.meta("en/department-national-defence").then(meta => {
+        console.log(meta)
+    })
+</script>
+```
 
 ### Nodejs
 
-    npm install canada-api
+```javascript
+const ca = require("canada-api")
+ca.meta("en/department-national-defence")
+```
 
-    const ca = require("canada-api")
-    ca.meta("en/department-national-defence")
 
 ## Core API
 
 ### ca.fetch(url[, options])
 
-- **url** `<string>` | `<URL>` URL
+- **url** `<string>` | `<URL>` absolute URL
 - **options** `<Object>` fetch [options](https://developer.mozilla.org/en-US/docs/Web/API/fetch#options) (Some limitations based on implementation)
     - **jobOptions** `<Object>` rate limiter [job options](https://github.com/SGrondin/bottleneck#job-options)
 - Returns: `<Promise>` Fulfills with `<Response>`
 
-Similar functionality to the [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/fetch) standard.  Calls are rate limited to avoid hitting request limits that result in throttling. Throws an error if the request does not complete successfully or if the destination URL is not on www.canada.ca.
+Uses [cross-fetch](https://github.com/lquixada/cross-fetch) for a universal [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/fetch) implementation. Calls are rate limited to avoid hitting request limits that result in throttling. Throws an error if the request does not complete successfully or if the destination URL is not on www.canada.ca.
 
 
 ### ca.fetch.limiter
 
 - `<Bottleneck>`
 
-The [Rate limiter](https://github.com/SGrondin/bottleneck#readme) used in fetch requests.
+The [Rate limiter](https://github.com/SGrondin/bottleneck#readme) used in `ca.fetch()`.
 
 
 ### ca.normalize(url[, type])
@@ -57,21 +62,33 @@ Base URL used for resolving relative URLs as well as URL validation. Value is `'
 
 ### ca.children(url[, options])
 
-- **url** `<string>` | `<URL>` | `Array<string|URL>` node URL(s)
-- **options** `<Object>` Fetch [options](https://developer.mozilla.org/en-US/docs/Web/API/fetch#options)
-    - **jobOptions** `<Object>` Rate limiter [options](https://github.com/SGrondin/bottleneck#job-options)
-- Returns: `<Promise>` Fulfills with `Array` of child nodes
+- **url** `<string>` | `<URL>` absolute or relative URL
+- **options** `<Object>` fetch [options](https://developer.mozilla.org/en-US/docs/Web/API/fetch#options)
+    - **jobOptions** `<Object>` rate limiter [job options](https://github.com/SGrondin/bottleneck#job-options)
+- Returns: `<Promise>` Fulfills with `<Object[]>` of child nodes
 
-Uses sitemaps to generate a list of child nodes
+Parses sitemaps to get a list of child nodes.
 
 ### ca.content(url[, options])
 
-`Promise<Object|string>` Content of a node, as text or json
+- **url** `<string>` | `<URL>` absolute or relative URL
+- **options** `<Object>` fetch [options](https://developer.mozilla.org/en-US/docs/Web/API/fetch#options)
+    - **jobOptions** `<Object>` rate limiter [job options](https://github.com/SGrondin/bottleneck#job-options)
+- Returns: `<Promise>` Fulfills with `<any>`
 
+Retrieves the document contents.  The result depends on the `content-type` of the response:
+- `'json'` parsed and returned as `<Object>`
+- `'html'` whitespace is compressed and returned as `<string>`
+- Any other types are returned as `<string>` with no modification
 
 ### ca.meta(url[, options])
 
-`Promise<Object>` Metadata object 
+- **url** `<string>` | `<URL>` absolute or relative URL
+- **options** `<Object>` fetch [options](https://developer.mozilla.org/en-US/docs/Web/API/fetch#options)
+    - **jobOptions** `<Object>` rate limiter [job options](https://github.com/SGrondin/bottleneck#job-options)
+- Returns: `<Promise>` Fulfills with `<Object>` containing metadata properties
+
+Nodes contain a variety of metadata properties that can be accessed through a public API. A separate document will be created as a reference for the most useful ones.
 
 
 ## Extended API
