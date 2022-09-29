@@ -8,10 +8,10 @@ const fetch = require('./fetch.js')
  * @private
  */
 const defaultOptions = {
-    rawContent: false,
     jobOptions: {
         expiration: 30000
-    }
+    },
+    rawContent: false
 }
 
 /**

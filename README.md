@@ -68,6 +68,7 @@ Base URL used for resolving relative URLs as well as URL validation. Value is `'
 - `url` {string|URL} absolute or relative URL
 - `options` {Object} fetch [options](https://developer.mozilla.org/en-US/docs/Web/API/fetch#options)
     - `jobOptions` {Object} rate limiter [job options](https://github.com/SGrondin/bottleneck#job-options)
+     - `rawContent` {boolean} Fulfills with unmodified {string} **Default:** `false`
 - Returns: {Promise} Fulfills with {Object[]} of child nodes
 
 Parses sitemaps to get a list of child nodes.

@@ -11,6 +11,7 @@ const defaultOptions = {
     jobOptions: {
         priority: 0
     },
+    rawContent: false
 }
 
 /**
@@ -25,6 +26,11 @@ const children = async (url, options) => {
 
     let response = await fetch(url, options)
     let xml = await response.text()
+
+    // Return raw text
+    if (options.rawContent) {
+        return xml
+    }
 
     // Parse XML sitemap
     let children = xml.match(/<url>.*?<\/url>/g).map(url => {
