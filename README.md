@@ -8,7 +8,7 @@ Cross platform API for fetching public data from [canada.ca](https://www.canada.
 ### Browsers
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/canada-api@2.0.4"></script>
+<script src="https://cdn.jsdelivr.net/npm/canada-api@2.0.5"></script>
 <script>
     ca.meta("en/department-national-defence").then(meta => {
         console.log(meta)
@@ -73,6 +73,11 @@ Base URL used for resolving relative URLs as well as URL validation. Value is `'
 
 Parses sitemaps to get a list of child nodes.
 
+### `ca.children.defaultOptions`
+
+- {Object}
+
+Allows modification to default options for all `ca.children()` calls.
 
 ### `ca.content(url[, options])`
 
@@ -87,6 +92,11 @@ Retrieves the document contents.  The result depends on the `content-type` heade
 - `'text/html'` compresses whitespace and fulfills with {string}
 - Other types are fulfilled as {string} with no modification
 
+### `ca.content.defaultOptions`
+
+- {Object}
+
+Allows modification to default options for all `ca.content()` calls.
 
 ### `ca.meta(url[, options])`
 
@@ -97,6 +107,12 @@ Retrieves the document contents.  The result depends on the `content-type` heade
 - Returns: {Promise} Fulfills with {Object} with metadata properties
 
 Nodes contain a variety of metadata properties that can be accessed through a public API. Some properties are reformatted for consistency if `rawContent` option is `false`. A separate document will be created as a reference for the most useful ones.
+
+### `ca.meta.defaultOptions`
+
+- {Object}
+
+Allows modification to default options for all `ca.meta()` calls.
 
 
 ## Extended API

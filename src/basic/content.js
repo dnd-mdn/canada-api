@@ -1,13 +1,12 @@
-const normalize = require('./normalize.js')
+const normalize = require('../core/normalize.js')
 const merge = require('merge-options')
-const fetch = require('./fetch.js')
+const fetch = require('../core/fetch.js')
 
 /**
  * Default fetch options
- * @const {object}
- * @private
+ * @type {object}
  */
-const defaultOptions = {
+let defaultOptions = {
     rawContent: false
 }
 
@@ -46,3 +45,6 @@ const content = async (url, options = {}) => {
 
 // Default export
 module.exports = exports = content
+
+// Expose default options
+exports.defaultOptions = defaultOptions
