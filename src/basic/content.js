@@ -1,50 +1,15 @@
 const normalize = require('../core/normalize.js')
-const merge = require('merge-options')
-const fetch = require('../core/fetch.js')
-
-/**
- * Default fetch options
- * @type {object}
- */
-let defaultOptions = {
-    rawContent: false
-}
+const request = require('../core/request.js')
 
 /**
  * Get node content
  * @param {string} url node URL
- * @param {Object} [options] fetch options
  * @returns {Promise<any>}
  */
-const content = async (url, options = {}) => {
+const content = async url => {
     url = normalize(url, 'content')
-    options = merge(defaultOptions, options)
-
-    let response = await fetch(url, options)
-
-    // Return raw text
-    if (options.rawContent) {
-        return await response.text()
-    }
-
-    let type = response.headers.get('Content-Type')
-    
-    if (type.includes('/json')) {
-        return response.json()
-    }
-
-    let text = await response.text()
-
-    // Compress whitespace in html
-    if (type.includes('text/html')) {
-        text = text.replace(/\s+/g, ' ')
-    }
-
-    return text
+    return request(url)
 }
 
 // Default export
 module.exports = exports = content
-
-// Expose default options
-exports.defaultOptions = defaultOptions

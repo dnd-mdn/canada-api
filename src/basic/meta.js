@@ -1,62 +1,39 @@
 const normalize = require('../core/normalize.js')
-const merge = require('merge-options')
-const fetch = require('../core/fetch.js')
-
-/**
- * Default fetch options
- * @type {object}
- */
-let defaultOptions = {
-    jobOptions: {
-        expiration: 30000
-    },
-    rawContent: false
-}
+const request = require('../core/request.js')
 
 /**
  * Get node metadata from jcr content
  * @param {string} url node path
- * @param {Object} [options] fetch options
  * @returns {Promise<Object>}
  */
-const meta = async (url, options) => {
+const meta = async url => {
     url = normalize(url, 'meta')
-    options = merge(defaultOptions, options)
 
-    let response = await fetch(url, options)
+    let response = await request(url)
+    let json = response.data
 
-    // Return raw text
-    if (options.rawContent) {
-        return await response.text()
-    }
-
-    // Verify content-type
-    if (!response.headers.get('content-type').includes('application/json')) {
-        throw new Error('Unexpected response content-type')
-    }
-
-    let json = await response.json()
-
-    // Format meta properties
-    Object.keys(json).forEach(key => {
-        if (json[key] === 'true') {
+    // Format some properties for consistency
+    for (const [key, value] of Object.entries(json)) {
+        if (value === 'true') {
             json[key] = true
-        } else if (json[key] === 'false') {
+        } else if (value === 'false') {
             json[key] = false
         } else if (key.endsWith('@TypeHint')) {
             delete json[key]
-        } else if (typeof json[key] === 'string') {
-            json[key] = maybeParseDate(json[key])
-        } else if (Array.isArray(json[key]) && json[key].length === 0) {
+        } else if (typeof value === 'string') {
+            json[key] = maybeParseDate(json[key].trim())
+        } else if (Array.isArray(value) && value.length === 0) {
             delete json[key]
         }
-    })
+    }
 
     // Sort object keys alphabetically for readability
-    return Object.keys(json).sort().reduce((obj, key) => {
+    response.data = Object.keys(response.data).sort().reduce((obj, key) => {
         obj[key] = json[key]
         return obj
     }, {})
+
+    return response
 }
 
 /**
@@ -78,13 +55,13 @@ const months = {
 function maybeParseDate(date) {
     // Simple
     if (/^\d{4}-\d{2}-\d{2}$/.test(date)) {
-        return Date.parse(date)
+        return new Date(date).toISOString()
     }
 
     // RFC1123
     let m = /^\w{3} (\w{3}) (\d{2}) (\d{4}) ([\d:]{8}) GMT([\-+]\d{4})$/.exec(date)
     if (m) {
-        return Date.parse(m[3] + '-' + months[m[1]] + '-' + m[2] + 'T' + m[4] + m[5])
+        return new Date(m[3] + '-' + months[m[1]] + '-' + m[2] + 'T' + m[4] + m[5]).toISOString()
     }
 
     return date
@@ -92,6 +69,3 @@ function maybeParseDate(date) {
 
 // Default export
 module.exports = exports = meta
-
-// Expose default options
-exports.defaultOptions = defaultOptions

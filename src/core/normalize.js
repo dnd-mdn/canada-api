@@ -43,11 +43,6 @@ const normalize = (url, type = 'path') => {
     // Strip Trailing slashes
     url.pathname = url.pathname.replace(/\/+$/, '')
 
-    // Cache busting
-    if (type !== 'path') {
-        url.searchParams.set('_', Date.now())
-    }
-
     // Handle other URL types
     if (url.pathname.includes('/_jcr_content/par')) {
         return normalizeReference(url, type)
@@ -77,7 +72,7 @@ function normalizePage(url, type) {
         url.pathname += '.html'
     }
 
-    return type === 'path' ? url.pathname : url.href
+    return url
 }
 
 /**
@@ -98,7 +93,7 @@ function normalizeAsset(url, type) {
         throw new Error('Cant load content of an asset node')
     }
 
-    return type === 'path' ? url.pathname : url.href
+    return url
 }
 
 /**
@@ -118,7 +113,7 @@ function normalizeReference(url, type) {
         throw new Error('Cant load children of a reference node')
     }
 
-    return url.href
+    return url
 }
 
 // Default export

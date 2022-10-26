@@ -1,57 +1,35 @@
 const normalize = require('../core/normalize.js')
-const merge = require('merge-options')
-const fetch = require('../core/fetch.js')
-
-/**
- * Default fetch options
- * @type {object}
- */
-let defaultOptions = {
-    jobOptions: {
-        priority: 0
-    },
-    rawContent: false
-}
+const request = require('../core/request.js')
 
 /**
  * Get list of child nodes from sitemap
  * @param {string} url node url
- * @param {Object} [options] fetch options
  * @returns {Promise<Array>}
  */
-const children = async (url, options) => {
+const children = async url => {
     url = normalize(url, 'children')
-    options = merge(defaultOptions, options)
 
-    let response = await fetch(url, options)
-    let xml = await response.text()
-
-    // Return raw text
-    if (options.rawContent) {
-        return xml
-    }
+    let response = await request(url)
 
     // Parse XML sitemap
-    let children = xml.match(/<url>.*?<\/url>/g).map(url => {
+    let children = response.data.match(/<url>.*?<\/url>/g).map(url => {
         let loc = url.match(/<loc>([^<]+)<\/loc>/)
         let mod = url.match(/<lastmod>([^<]+)<\/lastmod>/)
 
         return {
-            path: normalize(loc[1]),
-            lastmod: mod ? Date.parse(mod[1]) : null
+            url: normalize(loc[1]).pathname,
+            lastmod: mod ? new Date(mod[1]).toISOString() : null
         }
     })
 
     // First entry may be the parent
-    if (children.length && children[0].path === normalize(url)) {
+    if (children.length && children[0].url === normalize(url).pathname) {
         children.shift()
     }
 
-    return children
+    response.data = children
+    return response
 }
 
 // Default export
 module.exports = exports = children
-
-// Expose default options
-exports.defaultOptions = defaultOptions

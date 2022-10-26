@@ -4,51 +4,61 @@
 
 Cross platform API for fetching public data from [canada.ca](https://www.canada.ca).
 
-## Install
-### Browsers
 
+## Browser
 ```html
-<script src="https://cdn.jsdelivr.net/npm/canada-api@2.0.5"></script>
-<script>
-    ca.meta("en/department-national-defence").then(meta => {
-        console.log(meta)
-    })
-</script>
+<script src="https://cdn.jsdelivr.net/npm/canada-api@3.0.0"></script>
 ```
 
-### Nodejs
+## Node 10+
 
-```javascript
-const ca = require("canada-api")
-ca.meta("en/department-national-defence")
+### Install
+
+```shell
+npm install canada-api
 ```
 
+### Usage
 
+```js
+const ca = require('canada-api')
+```
 
 ## Core API
 
-### `ca.fetch(url[, options])`
+### `ca.request(url)`
 
-- `url` {string|URL} absolute URL
-- `options` {Object} fetch [options](https://developer.mozilla.org/en-US/docs/Web/API/fetch#options) (Some limitations based on implementation)
-    - `jobOptions` {Object} rate limiter [job options](https://github.com/SGrondin/bottleneck#job-options)
-- Returns: {Promise} Fulfills with {Response} upon success
+- `url` {string|URL} relative or absolute URL on [canada.ca](https://www.canada.ca)
+- Returns: {Promise} Fulfills with {Object} upon success
 
-Uses [cross-fetch](https://github.com/lquixada/cross-fetch#readme) for a universal [Fetch API](https://developer.mozilla.org/en-US/docs/Web/API/fetch) implementation. Calls are rate limited to avoid hitting request limits that result in throttling. Throws an {Error} if the request does not complete successfully or if the destination URL is not on [canada.ca](https://www.canada.ca).
+Throws {Error} if the request does not complete successfully or if the destination URL is not on [canada.ca](https://www.canada.ca).
+
+The properties included on each object:
+- `url` {string} destination URL
+- `redirected` {boolean} If the destination path is different from the request
+- `data` {string|Object} Document content as string or json data
+
+```json
+{
+  "url": "https://www.canada.ca/en/department-national-defence.html",
+  "redirected": false,
+  "data": "<!DOCTYPE html>\r\n...."
+}
+```
 
 
-### `ca.fetch.limiter`
+### `ca.request.limiter`
 
 - {Bottleneck}
 
-The [Rate limiter](https://github.com/SGrondin/bottleneck#readme) used in `ca.fetch()`.
+The [Rate limiter](https://github.com/SGrondin/bottleneck#readme) used in `ca.request()`.
 
 
 ### `ca.normalize(url[, type])`
 
 - `url` {string|URL} node URL
 - `type` {string} Possible values `'path'`, `'children'`, `'content'` or `'meta'`. **Default**: `'path'`
-- Returns: {string} Normalized path or URL
+- Returns: {URL} Normalized URL
 
 Validates and formats [canada.ca](https://www.canada.ca) URLs based on type. URLs can take many forms, so not all options will be valid. Throws an {Error} if the URL is invalid, or the type requested is not possible.
 
@@ -63,57 +73,92 @@ Base URL used for resolving relative URLs as well as URL validation. Value is `'
 
 ## Basic API
 
-### `ca.children(url[, options])`
+### `ca.children(url)`
 
 - `url` {string|URL} absolute or relative URL
-- `options` {Object} fetch [options](https://developer.mozilla.org/en-US/docs/Web/API/fetch#options)
-    - `jobOptions` {Object} rate limiter [job options](https://github.com/SGrondin/bottleneck#job-options)
-     - `rawContent` {boolean} Fulfills with unmodified {string} **Default:** `false`
-- Returns: {Promise} Fulfills with {Object[]} of child nodes
+- Returns: {Promise} Fulfills with {Object} containing child nodes
 
 Parses sitemaps to get a list of child nodes.
 
-### `ca.children.defaultOptions`
+```json
+{
+  "url": "https://www.canada.ca/en/department-national-defence.sitemap.xml",
+  "redirected": false,
+  "data": [
+    {
+      "url": "https://www.canada.ca/en/department-national-defence/...",
+      "lastmod": "2022-09-20T00:00:00.000Z"
+    },
+    ...
+  ]
+}
+```
 
-- {Object}
+Getting children of DAM folders/assets is not available.
 
-Allows modification to default options for all `ca.children()` calls.
-
-### `ca.content(url[, options])`
-
-- `url` {string|URL} absolute or relative URL
-- `options` {Object} fetch [options](https://developer.mozilla.org/en-US/docs/Web/API/fetch#options)
-    - `jobOptions` {Object} rate limiter [job options](https://github.com/SGrondin/bottleneck#job-options)
-    - `rawContent` {boolean} Fulfills with unmodified {string} **Default:** `false`
-- Returns: {Promise} Fulfills with {string|Object}
-
-Retrieves the document contents.  The result depends on the `content-type` header of {Response}:
-- `'application/json'` parses response and fulfills with {Object}
-- `'text/html'` compresses whitespace and fulfills with {string}
-- Other types are fulfilled as {string} with no modification
-
-### `ca.content.defaultOptions`
-
-- {Object}
-
-Allows modification to default options for all `ca.content()` calls.
-
-### `ca.meta(url[, options])`
+### `ca.content(url)`
 
 - `url` {string|URL} absolute or relative URL
-- `options` {Object} fetch [options](https://developer.mozilla.org/en-US/docs/Web/API/fetch#options)
-    - `jobOptions` {Object} rate limiter [job options](https://github.com/SGrondin/bottleneck#job-options)
-    - `rawContent` {boolean} Fulfills with unmodified {string} **Default:** `false`
-- Returns: {Promise} Fulfills with {Object} with metadata properties
+- Returns: {Promise} Fulfills with {Object} containing document contents
 
-Nodes contain a variety of metadata properties that can be accessed through a public API. Some properties are reformatted for consistency if `rawContent` option is `false`. A separate document will be created as a reference for the most useful ones.
+Retrieves the document contents.
 
-### `ca.meta.defaultOptions`
+The properties included on each object:
+```json
+{
+  "url": "https://www.canada.ca/en/department-national-defence.html",
+  "redirected": false,
+  "data": "<!DOCTYPE html>\r\n....'
+}
+```
 
-- {Object}
+Can also be used for DAM assets:
 
-Allows modification to default options for all `ca.meta()` calls.
+```json
+{
+  "url": "https://www.canada.ca/content/dam/dnd-mdn/documents/json/maple-en.json",
+  "redirected": false,
+  "data": {
+    "data": [
+      ...
+    ],
+  }
+}
+```
 
+### `ca.meta(url)`
+
+- `url` {string|URL} absolute or relative URL
+- Returns: {Promise} Fulfills with {Object} containing metadata properties
+
+Nodes contain a variety of metadata properties that can be accessed through a public API. Some properties such as date formats are reformatted for consistency. 
+
+The properties included on each object:
+```json
+{
+  "url": "https://www.canada.ca/en/department-national-defence/_jcr_content.json",
+  "redirected": false,
+  "data": {
+    "cq:lastModified": "2022-10-25T19:16:28.000Z",
+    "fluidWidth": false,
+    ...
+  }
+}
+```
+
+Can also be used for DAM assets:
+
+```json
+{
+  "url": "https://www.canada.ca/content/dam/dnd-mdn/documents/json/maple-en.json/_jcr_content.json",
+  "redirected": false",
+  "data": {
+    "dam:assetState": "processed",
+    "jcr:lastModified": "2022-10-26T19:39:54.000Z",
+    "jcr:primaryType": "dam:AssetContent"
+  }
+}
+```
 
 ## Extended API
 
