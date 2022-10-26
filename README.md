@@ -108,7 +108,7 @@ The properties included on each object:
 {
   "url": "https://www.canada.ca/en/department-national-defence.html",
   "redirected": false,
-  "data": "<!DOCTYPE html>\r\n....'
+  "data": "<!DOCTYPE html>\r\n...."
 }
 ```
 
@@ -119,9 +119,7 @@ Can also be used for DAM assets:
   "url": "https://www.canada.ca/content/dam/dnd-mdn/documents/json/maple-en.json",
   "redirected": false,
   "data": {
-    "data": [
-      ...
-    ],
+    "data": []
   }
 }
 ```
@@ -141,7 +139,6 @@ The properties included on each object:
   "data": {
     "cq:lastModified": "2022-10-25T19:16:28.000Z",
     "fluidWidth": false,
-    ...
   }
 }
 ```
@@ -151,7 +148,7 @@ Can also be used for DAM assets:
 ```json
 {
   "url": "https://www.canada.ca/content/dam/dnd-mdn/documents/json/maple-en.json/_jcr_content.json",
-  "redirected": false",
+  "redirected": false,
   "data": {
     "dam:assetState": "processed",
     "jcr:lastModified": "2022-10-26T19:39:54.000Z",
