@@ -89,7 +89,6 @@ Parses sitemaps to get a list of child nodes.
       "url": "https://www.canada.ca/en/department-national-defence/...",
       "lastmod": "2022-09-20T00:00:00.000Z"
     },
-    ...
   ]
 }
 ```
