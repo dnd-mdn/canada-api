@@ -27,7 +27,7 @@ const limiter = new Bottleneck(limiterOptions)
  * @param {string|URL} url
  * @private
  */
-const pFetch = url => crossFetch(url)
+const pFetch = (url, opts) => crossFetch(url, opts)
 
 /**
  * Modified rate limited fetch
@@ -45,7 +45,9 @@ async function request(url) {
     // Set cache busting param
     url.searchParams.set('_', Date.now())
 
-    let response = await limiter.schedule(pFetch, url)
+    let response = await limiter.schedule(pFetch, url, {
+        headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:107.0) Gecko/20100101 Firefox/107.0' }
+    })
 
     // Verify response code
     if (!response.ok) {

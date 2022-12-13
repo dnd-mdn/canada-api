@@ -7,7 +7,7 @@ Cross platform API for fetching public data from [canada.ca](https://www.canada.
 
 ## Browser
 ```html
-<script src="https://cdn.jsdelivr.net/npm/canada-api@3.0.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/canada-api@3.0.1"></script>
 ```
 
 ## Node 10+
