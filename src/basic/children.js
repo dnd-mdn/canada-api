@@ -17,13 +17,13 @@ const children = async url => {
         let mod = url.match(/<lastmod>([^<]+)<\/lastmod>/)
 
         return {
-            url: normalize(loc[1]).pathname,
+            path: normalize(loc[1]).pathname,
             lastmod: mod ? new Date(mod[1]).toISOString() : null
         }
     })
 
     // First entry may be the parent
-    if (children.length && children[0].url === normalize(url).pathname) {
+    if (children.length && children[0].path === normalize(url).pathname) {
         children.shift()
     }
 

@@ -7,7 +7,7 @@ Cross platform API for fetching public data from [canada.ca](https://www.canada.
 
 ## Browser
 ```html
-<script src="https://cdn.jsdelivr.net/npm/canada-api@3.0.1"></script>
+<script src="https://cdn.jsdelivr.net/npm/canada-api@3.0.2"></script>
 ```
 
 ## Node 10+
@@ -86,7 +86,7 @@ Parses sitemaps to get a list of child nodes.
   "redirected": false,
   "data": [
     {
-      "url": "https://www.canada.ca/en/department-national-defence/...",
+      "path": "https://www.canada.ca/en/department-national-defence/...",
       "lastmod": "2022-09-20T00:00:00.000Z"
     },
   ]
