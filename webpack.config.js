@@ -14,12 +14,4 @@ module.exports = {
     globalObject: 'typeof self !== \'undefined\' ? self : this',
     clean: true
   },
-  externals: {
-    'cross-fetch': {
-      amd: 'cross-fetch',
-      commonjs: 'cross-fetch',
-      commonjs2: 'cross-fetch',
-      root: 'fetch'
-    }
-  }
 }

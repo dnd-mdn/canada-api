@@ -1,5 +1,4 @@
 const normalize = require('./normalize')
-const crossFetch = require('cross-fetch')
 const Bottleneck = require('bottleneck/light.js')
 
 /**
@@ -23,13 +22,6 @@ const limiterOptions = {
 const limiter = new Bottleneck(limiterOptions)
 
 /**
- * Passthrough to prevent running method on non window object
- * @param {string|URL} url
- * @private
- */
-const pFetch = (url, opts) => crossFetch(url, opts)
-
-/**
  * Modified rate limited fetch
  * @param {string|URL} url
  * @param {object} [options] Fetch options
@@ -45,7 +37,7 @@ async function request(url) {
     // Set cache busting param
     url.searchParams.set('_', Date.now())
 
-    let response = await limiter.schedule(pFetch, url, {
+    let response = await limiter.schedule(fetch, url, {
         headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:107.0) Gecko/20100101 Firefox/107.0' }
     })
 
