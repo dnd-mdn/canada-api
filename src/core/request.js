@@ -19,7 +19,7 @@ const limiterOptions = {
  * Rate limiter
  * @const {Bottleneck}
  */
-const limiter = new Bottleneck(limiterOptions)
+let limiter = new Bottleneck(limiterOptions)
 
 /**
  * Passthrough to prevent running method on non window object
@@ -44,9 +44,16 @@ async function request(url) {
     // Set cache busting param
     url.searchParams.set('_', Date.now())
 
-    let response = await limiter.schedule(fetchWrapped, url, {
-        headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:107.0) Gecko/20100101 Firefox/107.0' }
-    })
+    let response = null
+    if (limiter) {
+        response = await limiter.schedule(fetchWrapped, url, {
+            headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:107.0) Gecko/20100101 Firefox/107.0' }
+        })
+    } else {
+        response = await fetch(url, {
+            headers: { 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:107.0) Gecko/20100101 Firefox/107.0' }
+        })
+    }
 
     // Verify response code
     if (!response.ok) {
