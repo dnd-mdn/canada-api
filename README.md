@@ -7,7 +7,7 @@ Cross platform API for fetching public data from [canada.ca](https://www.canada.
 
 ## Browser
 ```html
-<script src="https://cdn.jsdelivr.net/npm/canada-api@3.0.4"></script>
+<script src="https://cdn.jsdelivr.net/npm/canada-api@4.0.0"></script>
 ```
 
 ## Node 10+
@@ -29,47 +29,26 @@ const ca = require('canada-api')
 ### `ca.request(url)`
 
 - `url` {string|URL} relative or absolute URL on [canada.ca](https://www.canada.ca)
-- Returns: {Promise} Fulfills with {Object} upon success
+- Returns: {Promise} Fulfills with axios response {Object} upon success
 
 Throws {Error} if the request does not complete successfully or if the destination URL is not on [canada.ca](https://www.canada.ca).
 
-The properties included on each object:
-- `url` {string} destination URL
-- `redirected` {boolean} If the destination path is different from the request
-- `data` {string|Object} Document content as string or json data
-
 ```json
 {
-  "url": "https://www.canada.ca/en/department-national-defence.html",
-  "redirected": false,
-  "data": "<!DOCTYPE html>\r\n...."
+  "data": {},
+  "status": 200,
+  "statusText": "OK",
+  "headers": {},
+  "config": {},
+  "request": {}
 }
 ```
 
-
-### `ca.request.limiter`
-
-- {Bottleneck}
-
-The [Rate limiter](https://github.com/SGrondin/bottleneck#readme) used in `ca.request()`.
-
-
-### `ca.normalize(url[, type])`
+### `ca.normalize(url)`
 
 - `url` {string|URL} node URL
-- `type` {string} Possible values `'path'`, `'children'`, `'content'` or `'meta'`. **Default**: `'path'`
-- Returns: {URL} Normalized URL
 
-Validates and formats [canada.ca](https://www.canada.ca) URLs based on type. URLs can take many forms, so not all options will be valid. Throws an {Error} if the URL is invalid, or the type requested is not possible.
-
-
-### `ca.normalize.baseURL`
-
-- {string}
-
-Base URL used for resolving relative URLs as well as URL validation. Value is `'https://www.canada.ca'`.
-
-
+Validates and formats [canada.ca](https://www.canada.ca). Throws an {Error} if the URL is invalid, or the type requested is not possible.
 
 ## Basic API
 
@@ -82,12 +61,10 @@ Parses sitemaps to get a list of child nodes.
 
 ```json
 {
-  "url": "https://www.canada.ca/en/department-national-defence.sitemap.xml",
-  "redirected": false,
   "data": [
     {
       "path": "https://www.canada.ca/en/department-national-defence/...",
-      "lastmod": "2022-09-20T00:00:00.000Z"
+      "lastmod": "2022-09-20"
     },
   ]
 }
@@ -102,24 +79,9 @@ Getting children of DAM folders/assets is not available.
 
 Retrieves the document contents.
 
-The properties included on each object:
 ```json
 {
-  "url": "https://www.canada.ca/en/department-national-defence.html",
-  "redirected": false,
   "data": "<!DOCTYPE html>\r\n...."
-}
-```
-
-Can also be used for DAM assets:
-
-```json
-{
-  "url": "https://www.canada.ca/content/dam/dnd-mdn/documents/json/maple-en.json",
-  "redirected": false,
-  "data": {
-    "data": []
-  }
 }
 ```
 
@@ -130,11 +92,8 @@ Can also be used for DAM assets:
 
 Nodes contain a variety of metadata properties that can be accessed through a public API. Some properties such as date formats are reformatted for consistency. 
 
-The properties included on each object:
 ```json
 {
-  "url": "https://www.canada.ca/en/department-national-defence/_jcr_content.json",
-  "redirected": false,
   "data": {
     "cq:lastModified": "2022-10-25T19:16:28.000Z",
     "fluidWidth": false,
@@ -142,20 +101,3 @@ The properties included on each object:
 }
 ```
 
-Can also be used for DAM assets:
-
-```json
-{
-  "url": "https://www.canada.ca/content/dam/dnd-mdn/documents/json/maple-en.json/_jcr_content.json",
-  "redirected": false,
-  "data": {
-    "dam:assetState": "processed",
-    "jcr:lastModified": "2022-10-26T19:39:54.000Z",
-    "jcr:primaryType": "dam:AssetContent"
-  }
-}
-```
-
-## Extended API
-
-TBD

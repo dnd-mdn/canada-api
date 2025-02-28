@@ -2,7 +2,7 @@ const path = require('path');
 
 module.exports = {
   mode: 'production',
-  entry: './src/index.js',
+  entry: './src/index.mjs',
   output: {
     path: path.resolve(__dirname, './dist/'),
     filename: 'ca.js',
@@ -14,4 +14,5 @@ module.exports = {
     globalObject: 'typeof self !== \'undefined\' ? self : this',
     clean: true
   },
+  devtool: false
 }
