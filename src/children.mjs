@@ -10,11 +10,12 @@ const children = axios.create({
 
 // Transform URL
 children.interceptors.request.use(config => {
-    config.url = normalize(config.url);
+    const url = normalize(config.url);
 
-    config.url.pathname = config.url.pathname + '.sitemap.xml';
-    config.url.searchParams.set('_', Date.now());
+    url.pathname = url.pathname + '.sitemap.xml';
+    url.searchParams.set('_', Date.now());
     
+    config.url = url.toString();
     return config;
 }, error => {
     return Promise.reject(error);

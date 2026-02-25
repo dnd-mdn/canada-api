@@ -10,11 +10,12 @@ const content = axios.create({
 
 // Transform URL
 content.interceptors.request.use(config => {
-    config.url = normalize(config.url);
+    const url = normalize(config.url);
 
-    config.url.pathname = config.url.pathname + '.html';
-    config.url.searchParams.set('_', Date.now());
+    url.pathname = url.pathname + '.html';
+    url.searchParams.set('_', Date.now());
     
+    config.url = url.toString();
     return config;
 }, error => {
     return Promise.reject(error);

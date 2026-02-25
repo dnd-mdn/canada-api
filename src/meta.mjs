@@ -10,11 +10,12 @@ const meta = axios.create({
 
 // Transform URL
 meta.interceptors.request.use(config => {
-    config.url = normalize(config.url);
+    const url = normalize(config.url);
 
-    config.url.pathname = config.url.pathname + '/_jcr_content.json';
-    config.url.searchParams.set('_', Date.now());
+    url.pathname = url.pathname + '/_jcr_content.json';
+    url.searchParams.set('_', Date.now());
     
+    config.url = url.toString();
     return config;
 }, error => {
     return Promise.reject(error);
