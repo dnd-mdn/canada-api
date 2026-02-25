@@ -40,7 +40,7 @@ export const parseSitemap = (data) => {
     
     return [...data.matchAll(regex)].map(match => ({
         loc: normalize(match[1]).pathname,
-        lastmod: match[2] ?? null
+        lastmod: match[2] ? new Date(match[2]).toISOString() : null
     }));
 };
 
