@@ -1,5 +1,5 @@
 
-const BASE_URL = 'https://www.canada.ca';
+import { BASE_URL } from './config.mjs';
 
 /**
  * Normalize a canada.ca URL to a clean pathname

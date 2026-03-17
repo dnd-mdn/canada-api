@@ -1,9 +1,10 @@
 import axios from "axios";
 import normalize from "./normalize.mjs";
+import { BASE_URL } from "./config.mjs";
 
 // Create a new axios instance
 const meta = axios.create({
-    baseURL: "https://www.canada.ca",
+    baseURL: BASE_URL,
     timeout: 5000,
     maxRedirects: 0
 });

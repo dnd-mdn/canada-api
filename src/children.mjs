@@ -1,10 +1,11 @@
 import axios from "axios";
 import { XMLParser } from "fast-xml-parser";
 import normalize from "./normalize.mjs";
+import { BASE_URL } from "./config.mjs";
 
 // Create a new axios instance
 const children = axios.create({
-    baseURL: "https://www.canada.ca",
+    baseURL: BASE_URL,
     timeout: 30000,
     maxRedirects: 0
 });

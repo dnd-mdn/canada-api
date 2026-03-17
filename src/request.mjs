@@ -1,8 +1,9 @@
 import axios from "axios";
+import { BASE_URL } from "./config.mjs";
 
 // Create a new axios instance
 const request = axios.create({
-    baseURL: "https://www.canada.ca",
+    baseURL: BASE_URL,
     timeout: 30000
 });
 
