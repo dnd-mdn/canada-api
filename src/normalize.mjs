@@ -2,14 +2,16 @@
 const BASE_URL = 'https://www.canada.ca';
 
 /**
- * Normalize AEM path
- * @param {string|URL} url
- * @returns {URL}
+ * Normalize a canada.ca URL to a clean pathname
+ * @param {string|URL} url - A full URL or relative path (e.g., 'https://www.canada.ca/en/page' or '/en/page')
+ * @returns {URL} Normalized URL object with cleaned pathname
+ * @throws {TypeError} If url is not a string or URL object
+ * @throws {Error} If URL is not from canada.ca or path doesn't start with /en/ or /fr/
  */
 const normalize = (url) => {
 
     if (typeof url === 'string') {
-        url = new URL(url, BASE_URL + '/')
+        url = new URL(url, BASE_URL)
     } else if (!(url instanceof URL)) {
         throw new TypeError('string or URL object expected')
     }
@@ -21,13 +23,15 @@ const normalize = (url) => {
 
     url.pathname = url.pathname.replace(/^\/content\/canadasite/, '');
 
-    // Verify root
+    // Verify root language
     if (!url.pathname.startsWith('/en/') && !url.pathname.startsWith('/fr/')) {
-        throw new Error('Invalid path')
+        throw new Error(`Invalid path: "${url.pathname}" must start with /en/ or /fr/`)
     }
 
-    // Strip extension and trailing slashes
-    url.pathname = url.pathname.replace(/(\.[^/]+|\/+)$/, '')
+    // Remove file extensions (like .html, .xml)
+    url.pathname = url.pathname.replace(/\.[^/]*$/, '');
+    // Remove trailing slashes
+    url.pathname = url.pathname.replace(/\/+$/, '');
 
     return url
 }
