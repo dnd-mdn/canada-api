@@ -5,7 +5,7 @@
   "browser": "dist/ca.js",
   "main": "src/index.mjs",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "node --test tests/**/*.test.mjs",
     "build": "webpack",
     "dev": "webpack --mode development"
   },
@@ -27,6 +27,7 @@
     "webpack-cli": "^6.0.1"
   },
   "dependencies": {
-    "axios": "^1.13.5"
+    "axios": "^1.13.5",
+    "fast-xml-parser": "^4.5.0"
   }
 }

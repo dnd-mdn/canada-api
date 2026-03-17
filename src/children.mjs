@@ -1,4 +1,5 @@
 import axios from "axios";
+import { XMLParser } from "fast-xml-parser";
 import normalize from "./normalize.mjs";
 
 // Create a new axios instance
@@ -14,7 +15,7 @@ children.interceptors.request.use(config => {
 
     url.pathname = url.pathname + '.sitemap.xml';
     url.searchParams.set('_', Date.now());
-    
+
     config.url = url.toString();
     return config;
 }, error => {
@@ -32,15 +33,17 @@ children.interceptors.response.use(response => {
 
 /**
  * Sitemap parser
- * @param {string} data 
+ * @param {string} data
  * @returns {Array<{path: string, lastmod: string}>}
  */
 export const parseSitemap = (data) => {
-    const regex = /<url>.*?<loc>([^<]+)<\/loc>.*?(?:<lastmod>([^<]+)<\/lastmod>)?.*?<\/url>/g;
-    
-    return [...data.matchAll(regex)].map(match => ({
-        loc: normalize(match[1]).pathname,
-        lastmod: match[2] ? new Date(match[2]).toISOString() : null
+    const parser = new XMLParser();
+    const result = parser.parse(data);
+
+    const urls = result.urlset?.url || [];
+    return (Array.isArray(urls) ? urls : [urls]).map(item => ({
+        path: normalize(item.loc).pathname,
+        lastmod: item.lastmod ? new Date(item.lastmod).toISOString() : null
     }));
 };
 
