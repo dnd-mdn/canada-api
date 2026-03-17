@@ -3,7 +3,11 @@ import { XMLParser } from "fast-xml-parser";
 import normalize from "./normalize.mjs";
 import { BASE_URL } from "./config.mjs";
 
-// Create a new axios instance
+/**
+ * Axios instance configured for fetching sitemap URLs
+ * @type {import('axios').AxiosInstance}
+ * @description Returns normalized node list of sitemap children
+ */
 const children = axios.create({
     baseURL: BASE_URL,
     timeout: 30000,
@@ -33,9 +37,17 @@ children.interceptors.response.use(response => {
 });
 
 /**
- * Sitemap parser
- * @param {string} data
- * @returns {Array<{path: string, lastmod: string}>}
+ * Represents a single URL entry from a sitemap
+ * @typedef {object} SitemapEntry
+ * @property {string} path - The normalized URL path (e.g., '/en/page')
+ * @property {string|null} lastmod - ISO 8601 timestamp or null if not present
+ */
+
+/**
+ * Parse XML sitemap data into structured URL entries
+ * @param {string} data - Raw XML sitemap content
+ * @returns {SitemapEntry[]} Array of sitemap entries with path and lastmod
+ * @description Parses XML sitemap format and returns normalized entries with ISO timestamps
  */
 export const parseSitemap = (data) => {
     const parser = new XMLParser();

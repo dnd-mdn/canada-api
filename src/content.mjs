@@ -2,7 +2,11 @@ import axios from "axios";
 import normalize from "./normalize.mjs";
 import { BASE_URL } from "./config.mjs";
 
-// Create a new axios instance
+/**
+ * Axios instance configured for fetching HTML content
+ * @type {import('axios').AxiosInstance}
+ * @description Returns raw HTML content
+ */
 const content = axios.create({
     baseURL: BASE_URL,
     timeout: 5000,
@@ -15,7 +19,7 @@ content.interceptors.request.use(config => {
 
     url.pathname = url.pathname + '.html';
     url.searchParams.set('_', Date.now());
-    
+
     config.url = url.toString();
     return config;
 }, error => {
