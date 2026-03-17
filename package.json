@@ -23,11 +23,11 @@
   "homepage": "https://github.com/dnd-mdn/canada-api#readme",
   "bugs": "https://github.com/dnd-mdn/canada-api/issues",
   "devDependencies": {
-    "webpack": "^5.101.3",
-    "webpack-cli": "^6.0.1"
+    "webpack": "^5.105.4",
+    "webpack-cli": "^7.0.2"
   },
   "dependencies": {
-    "axios": "^1.13.5",
-    "fast-xml-parser": "^4.5.0"
+    "axios": "^1.13.6",
+    "fast-xml-parser": "^5.5.6"
   }
 }
