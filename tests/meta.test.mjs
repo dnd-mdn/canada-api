@@ -81,6 +81,18 @@ describe('formatMeta', () => {
             assert.deepStrictEqual(keys, ['apple', 'banana', 'zebra']);
         });
 
+        test('does not mutate the input object', () => {
+            const data = { 
+                published: 'true',
+                tags: [],
+                'title@TypeHint': 'String',
+                title: 'Page'
+            };
+            const original = { ...data };
+            formatMeta(data);
+            assert.deepStrictEqual(data, original);
+        });
+
         test('adds normalized peer field', () => {
             const data = {
                 gcAltLanguagePeer: '/content/canadasite/fr/ministere-defense-nationale/feuille-derable.html'

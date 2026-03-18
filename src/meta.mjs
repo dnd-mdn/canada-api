@@ -87,26 +87,29 @@ function formatDate(text) {
  * normalized `peer` field when `gcAltLanguagePeer` is present.
  */
 export const formatMeta = (data) => {
-    // Format some properties for consistency
+    const result = {}
+
     for (const [key, value] of Object.entries(data)) {
+        if (key.endsWith('@TypeHint')) continue
+        if (Array.isArray(value) && value.length === 0) continue
+
         if (value === 'true') {
-            data[key] = true
+            result[key] = true
         } else if (value === 'false') {
-            data[key] = false
-        } else if (key.endsWith('@TypeHint')) {
-            delete data[key]
+            result[key] = false
         } else if (key === 'gcAltLanguagePeer') {
-            data['peer'] = normalize(value).pathname
+            result[key] = value
+            result['peer'] = normalize(value).pathname
         } else if (typeof value === 'string') {
-            data[key] = formatDate(data[key].trim())
-        } else if (Array.isArray(value) && value.length === 0) {
-            delete data[key]
+            result[key] = formatDate(value.trim())
+        } else {
+            result[key] = value
         }
     }
 
     // Sort object keys alphabetically for readability
-    return Object.keys(data).sort().reduce((obj, key) => {
-        obj[key] = data[key]
+    return Object.keys(result).sort().reduce((obj, key) => {
+        obj[key] = result[key]
         return obj
     }, {})
 }
