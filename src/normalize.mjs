@@ -23,15 +23,13 @@ const normalize = (url) => {
 
     url.pathname = url.pathname.replace(/^\/content\/canadasite/, '');
 
+    // Remove file extensions (like .html, .xml) and trailing slashes
+    url.pathname = url.pathname.replace(/\.[^/]*$/, '').replace(/\/+$/, '');
+
     // Verify root language
     if (!url.pathname.startsWith('/en/') && !url.pathname.startsWith('/fr/')) {
         throw new Error(`Invalid path: "${url.pathname}" must start with /en/ or /fr/`)
     }
-
-    // Remove file extensions (like .html, .xml)
-    url.pathname = url.pathname.replace(/\.[^/]*$/, '');
-    // Remove trailing slashes
-    url.pathname = url.pathname.replace(/\/+$/, '');
 
     return url
 }

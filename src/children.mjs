@@ -1,5 +1,5 @@
 import axios from "axios";
-import { XMLParser } from "fast-xml-parser";
+import { XMLParser, XMLValidator } from "fast-xml-parser";
 import normalize from "./normalize.mjs";
 import { BASE_URL } from "./config.mjs";
 
@@ -50,11 +50,14 @@ children.interceptors.response.use(response => {
  * @description Parses XML sitemap format and returns normalized entries with ISO timestamps
  */
 export const parseSitemap = (data) => {
+    const validation = XMLValidator.validate(data);
+    if (validation !== true) throw new Error(validation.err.msg);
+
     const parser = new XMLParser();
     const result = parser.parse(data);
 
     const urls = result.urlset?.url || [];
-    return (Array.isArray(urls) ? urls : [urls]).map(item => ({
+    return (Array.isArray(urls) ? urls : [urls]).filter(item => item.loc).map(item => ({
         path: normalize(item.loc).pathname,
         lastmod: item.lastmod ? new Date(item.lastmod).toISOString() : null
     }));
