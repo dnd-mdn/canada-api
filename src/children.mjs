@@ -47,7 +47,9 @@ children.interceptors.response.use(response => {
  * Parse XML sitemap data into structured URL entries
  * @param {string} data - Raw XML sitemap content
  * @returns {SitemapEntry[]} Array of sitemap entries with path and lastmod
- * @description Parses XML sitemap format and returns normalized entries with ISO timestamps
+ * @throws {Error} If the XML is malformed or invalid
+ * @description Parses XML sitemap format and returns normalized entries with ISO timestamps.
+ * Entries missing a `<loc>` element are silently skipped.
  */
 export const parseSitemap = (data) => {
     const validation = XMLValidator.validate(data);

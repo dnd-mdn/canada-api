@@ -10,7 +10,7 @@ Cross platform API for fetching public data from [canada.ca](https://www.canada.
 <script src="https://cdn.jsdelivr.net/npm/canada-api@4.0.5"></script>
 ```
 
-## Node 10+
+## Node 18+
 
 ### Install
 
@@ -21,17 +21,35 @@ npm install canada-api
 ### Usage
 
 ```js
-const ca = require('canada-api')
+import ca from 'canada-api'
 ```
+
+## Testing
+
+```shell
+npm test
+```
+
+Tests use the built-in Node.js test runner (`node:test`) and require Node 18 or later.
 
 ## Core API
 
+### `ca.normalize(url)`
+
+- `url` {string|URL} - Full URL or relative path (e.g. `'/en/page'` or `'https://www.canada.ca/en/page'`)
+- Returns: {URL} Normalized URL object with cleaned pathname
+
+Validates and normalizes a canada.ca URL. Strips the `/content/canadasite` prefix, file extensions, and trailing slashes.
+
+Throws {TypeError} if `url` is not a string or URL object.
+Throws {Error} if the URL is not on canada.ca or the path does not start with `/en/` or `/fr/`.
+
 ### `ca.request(url)`
 
-- `url` {string|URL} relative or absolute URL on [canada.ca](https://www.canada.ca)
-- Returns: {Promise} Fulfills with axios response {Object} upon success
+- `url` {string|URL} - Relative or absolute URL on [canada.ca](https://www.canada.ca)
+- Returns: {Promise} Fulfills with an axios response object
 
-Throws {Error} if the request does not complete successfully or if the destination URL is not on [canada.ca](https://www.canada.ca).
+Raw HTTP client for canada.ca. No URL transformation is applied.
 
 ```json
 {
@@ -44,40 +62,32 @@ Throws {Error} if the request does not complete successfully or if the destinati
 }
 ```
 
-### `ca.normalize(url)`
-
-- `url` {string|URL} node URL
-
-Validates and formats [canada.ca](https://www.canada.ca). Throws an {Error} if the URL is invalid, or the type requested is not possible.
-
 ## Basic API
 
 ### `ca.children(url)`
 
-- `url` {string|URL} absolute or relative URL
-- Returns: {Promise} Fulfills with {Object} containing child nodes
+- `url` {string|URL} - Absolute or relative URL
+- Returns: {Promise} Fulfills with an axios response whose `data` is an array of sitemap entries
 
-Parses sitemaps to get a list of child nodes.
+Fetches and parses the sitemap for the given page, returning its child pages. Entries without a `<loc>` element are skipped.
 
 ```json
 {
   "data": [
     {
-      "path": "https://www.canada.ca/en/department-national-defence/...",
-      "lastmod": "2022-09-20"
-    },
+      "path": "/en/department-national-defence/maple-leaf",
+      "lastmod": "2022-09-20T00:00:00.000Z"
+    }
   ]
 }
 ```
 
-Getting children of DAM folders/assets is not available.
-
 ### `ca.content(url)`
 
-- `url` {string|URL} absolute or relative URL
-- Returns: {Promise} Fulfills with {Object} containing document contents
+- `url` {string|URL} - Absolute or relative URL
+- Returns: {Promise} Fulfills with an axios response whose `data` is the raw HTML string
 
-Retrieves the document contents.
+Retrieves the HTML content of the page.
 
 ```json
 {
@@ -87,17 +97,24 @@ Retrieves the document contents.
 
 ### `ca.meta(url)`
 
-- `url` {string|URL} absolute or relative URL
-- Returns: {Promise} Fulfills with {Object} containing metadata properties
+- `url` {string|URL} - Absolute or relative URL
+- Returns: {Promise} Fulfills with an axios response whose `data` is a formatted metadata object
 
-Nodes contain a variety of metadata properties that can be accessed through a public API. Some properties such as date formats are reformatted for consistency. 
+Fetches JCR metadata for the given page. The following transformations are applied:
+
+- String `"true"` / `"false"` values are converted to booleans
+- `@TypeHint` properties are removed
+- Empty arrays are removed
+- Date strings are converted to ISO 8601
+- Keys are sorted alphabetically
+- A normalized `peer` field is added when `gcAltLanguagePeer` is present
 
 ```json
 {
   "data": {
     "cq:lastModified": "2022-10-25T19:16:28.000Z",
     "fluidWidth": false,
+    "peer": "/fr/ministere-defense-nationale/feuille-erable"
   }
 }
 ```
-
