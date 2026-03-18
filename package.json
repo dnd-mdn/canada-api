@@ -22,6 +22,10 @@
 	"license": "MIT",
 	"homepage": "https://github.com/dnd-mdn/canada-api#readme",
 	"bugs": "https://github.com/dnd-mdn/canada-api/issues",
+	"files": [
+		"src",
+		"dist"
+	],
 	"devDependencies": {
 		"webpack": "^5.105.4",
 		"webpack-cli": "^7.0.2"
