@@ -1,6 +1,6 @@
 {
 	"name": "canada-api",
-	"version": "5.0.0",
+	"version": "5.0.1",
 	"description": "Cross platform API to fetch data from canada.ca",
 	"browser": "dist/ca.js",
 	"main": "src/index.mjs",
@@ -31,7 +31,7 @@
 		"webpack-cli": "^7.0.2"
 	},
 	"dependencies": {
-		"axios": "^1.13.6",
-		"fast-xml-parser": "^5.5.6"
+		"axios": "^1.15.0",
+		"fast-xml-parser": "^5.6.0"
 	}
 }
