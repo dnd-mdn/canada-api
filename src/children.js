@@ -3,6 +3,8 @@ import { XMLParser, XMLValidator } from "fast-xml-parser";
 import normalize from "./normalize.js";
 import { BASE_URL } from "./config.js";
 
+const parser = new XMLParser();
+
 /**
  * Axios instance configured for fetching sitemap URLs
  * @type {import('axios').AxiosInstance}
@@ -51,7 +53,6 @@ children.interceptors.response.use(response => {
  * @description Parses XML sitemap format and returns normalized entries with ISO timestamps.
  * Entries missing a `<loc>` element are silently skipped.
  */
-const parser = new XMLParser();
 
 export const parseSitemap = (data) => {
     const validation = XMLValidator.validate(data);

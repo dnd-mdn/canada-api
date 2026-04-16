@@ -5,6 +5,12 @@
 	"browser": "dist/ca.js",
 	"type": "module",
 	"main": "src/index.js",
+	"exports": {
+		".": {
+			"browser": "./dist/ca.js",
+			"default": "./src/index.js"
+		}
+	},
 	"scripts": {
 		"test": "node --test tests/**/*.test.js",
 		"build": "webpack",
