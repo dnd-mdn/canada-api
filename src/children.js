@@ -51,11 +51,12 @@ children.interceptors.response.use(response => {
  * @description Parses XML sitemap format and returns normalized entries with ISO timestamps.
  * Entries missing a `<loc>` element are silently skipped.
  */
+const parser = new XMLParser();
+
 export const parseSitemap = (data) => {
     const validation = XMLValidator.validate(data);
     if (validation !== true) throw new Error(validation.err.msg);
 
-    const parser = new XMLParser();
     const result = parser.parse(data);
 
     const urls = result.urlset?.url || [];

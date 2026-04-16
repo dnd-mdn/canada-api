@@ -9,7 +9,7 @@ import { BASE_URL } from "./config.js";
  */
 const content = axios.create({
     baseURL: BASE_URL,
-    timeout: 5000,
+    timeout: 10000,
     maxRedirects: 0
 });
 
