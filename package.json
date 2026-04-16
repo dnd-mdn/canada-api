@@ -2,43 +2,46 @@
 	"name": "canada-api",
 	"version": "5.0.1",
 	"description": "Cross platform API to fetch data from canada.ca",
-	"browser": "dist/ca.js",
 	"type": "module",
 	"main": "src/index.js",
+	"browser": "dist/ca.js",
 	"exports": {
 		".": {
 			"browser": "./dist/ca.js",
 			"default": "./src/index.js"
 		}
 	},
+	"files": [
+		"src",
+		"dist"
+	],
 	"scripts": {
 		"test": "node --test tests/**/*.test.js",
 		"build": "webpack",
 		"dev": "webpack --mode development"
 	},
-	"repository": {
-		"type": "git",
-		"url": "https://github.com/dnd-mdn/canada-api.git"
+	"author": "National Defence",
+	"license": "MIT",
+	"engines": {
+		"node": ">=18"
 	},
 	"keywords": [
 		"canada",
 		"api",
 		"fetch"
 	],
-	"author": "National Defence",
-	"license": "MIT",
 	"homepage": "https://github.com/dnd-mdn/canada-api#readme",
 	"bugs": "https://github.com/dnd-mdn/canada-api/issues",
-	"files": [
-		"src",
-		"dist"
-	],
-	"devDependencies": {
-		"webpack": "^5.105.4",
-		"webpack-cli": "^7.0.2"
+	"repository": {
+		"type": "git",
+		"url": "https://github.com/dnd-mdn/canada-api.git"
 	},
 	"dependencies": {
 		"axios": "^1.15.0",
 		"fast-xml-parser": "^5.6.0"
+	},
+	"devDependencies": {
+		"webpack": "^5.105.4",
+		"webpack-cli": "^7.0.2"
 	}
 }
