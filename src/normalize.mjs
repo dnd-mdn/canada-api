@@ -12,7 +12,9 @@ const normalize = (url) => {
 
     if (typeof url === 'string') {
         url = new URL(url, BASE_URL)
-    } else if (!(url instanceof URL)) {
+    } else if (url instanceof URL) {
+        url = new URL(url.href)
+    } else {
         throw new TypeError('string or URL object expected')
     }
 

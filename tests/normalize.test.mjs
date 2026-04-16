@@ -20,6 +20,13 @@ describe('normalize', () => {
             assert.strictEqual(result.pathname, '/en/department-national-defence/maple-leaf');
         });
 
+        test('does not mutate input URL object', () => {
+            const urlObj = new URL('https://www.canada.ca/en/department-national-defence/maple-leaf.html');
+            const originalPathname = urlObj.pathname;
+            normalize(urlObj);
+            assert.strictEqual(urlObj.pathname, originalPathname);
+        });
+
         test('accepts French path', () => {
             const url = normalize('https://www.canada.ca/fr/ministere-defense-nationale/feuille-erable.html');
             assert.strictEqual(url.pathname, '/fr/ministere-defense-nationale/feuille-erable');
