@@ -1,35 +1,4 @@
-import axios from "axios";
 import normalize from "./normalize.js";
-import { BASE_URL } from "./config.js";
-
-/**
- * Axios instance configured for fetching JCR metadata
- * @type {import('axios').AxiosInstance}
- * @description Returns formatted metadata
- */
-const meta = axios.create({
-    baseURL: BASE_URL,
-    timeout: 10000,
-    maxRedirects: 0
-});
-
-// Transform URL
-meta.interceptors.request.use(config => {
-    const url = normalize(config.url);
-
-    url.pathname = url.pathname + '/_jcr_content.json';
-    url.searchParams.set('_', Date.now());
-
-    config.url = url.toString();
-    return config;
-});
-
-// Process response data
-meta.interceptors.response.use(response => {
-    response.data = formatMeta(response.data);
-
-    return response;
-});
 
 /**
  * Month name to number mapping
@@ -109,5 +78,37 @@ export const formatMeta = (data) => {
         return obj
     }, {})
 }
+
+/**
+ * Fetch and format JCR metadata for a canada.ca page
+ * @param {string|URL} url - Absolute or relative URL
+ * @returns {Promise<{data: Record<string, any>, status: number, statusText: string, headers: Headers}>}
+ * @throws {Error} If the request fails or returns a non-2xx status
+ */
+const meta = async (url) => {
+    const target = normalize(url);
+    target.pathname += '/_jcr_content.json';
+    target.searchParams.set('_', Date.now());
+
+    const response = await fetch(target, {
+        signal: AbortSignal.timeout(10000),
+        redirect: 'error'
+    });
+
+    if (!response.ok) {
+        const error = new Error(`${response.status} ${response.statusText}`);
+        error.status = response.status;
+        throw error;
+    }
+    
+    const data = await response.json();
+    
+    return {
+        data: formatMeta(data),
+        status: response.status,
+        statusText: response.statusText,
+        headers: response.headers
+    };
+};
 
 export default meta;

@@ -109,7 +109,7 @@ Fetches JCR metadata for the given page. The following transformations are appli
 Raw HTTP client with `https://www.canada.ca` as the base URL. Use this for any requests not covered by the methods above. No URL transformation is applied.
 
 ```js
-const response = await ca.request.get('/en/sr/srb/srvs/t-srvc-eng.html');
+const response = await ca.request('/en/sr/srb/srvs/t-srvc-eng.html');
 ```
 
 ---

@@ -1,38 +1,7 @@
-import axios from "axios";
 import { XMLParser, XMLValidator } from "fast-xml-parser";
 import normalize from "./normalize.js";
-import { BASE_URL } from "./config.js";
 
 const parser = new XMLParser();
-
-/**
- * Axios instance configured for fetching sitemap URLs
- * @type {import('axios').AxiosInstance}
- * @description Returns normalized node list of sitemap children
- */
-const children = axios.create({
-    baseURL: BASE_URL,
-    timeout: 30000,
-    maxRedirects: 0
-});
-
-// Transform URL
-children.interceptors.request.use(config => {
-    const url = normalize(config.url);
-
-    url.pathname = url.pathname + '.sitemap.xml';
-    url.searchParams.set('_', Date.now());
-
-    config.url = url.toString();
-    return config;
-});
-
-// Process response data
-children.interceptors.response.use(response => {
-    response.data = parseSitemap(response.data);
-
-    return response;
-});
 
 /**
  * Represents a single URL entry from a sitemap
@@ -44,12 +13,9 @@ children.interceptors.response.use(response => {
 /**
  * Parse XML sitemap data into structured URL entries
  * @param {string} data - Raw XML sitemap content
- * @returns {SitemapEntry[]} Array of sitemap entries with path and lastmod
+ * @returns {SitemapEntry[]} Array of sitemap entries with path and lastmod. Entries missing a `<loc>` element are skipped.
  * @throws {Error} If the XML is malformed or invalid
- * @description Parses XML sitemap format and returns normalized entries with ISO timestamps.
- * Entries missing a `<loc>` element are silently skipped.
  */
-
 export const parseSitemap = (data) => {
     const validation = XMLValidator.validate(data);
     if (validation !== true) throw new Error(validation.err.msg);
@@ -61,6 +27,38 @@ export const parseSitemap = (data) => {
         path: normalize(item.loc).pathname,
         lastmod: item.lastmod ? new Date(item.lastmod).toISOString() : null
     }));
+};
+
+/**
+ * Fetch and parse sitemap children for a canada.ca page
+ * @param {string|URL} url - Absolute or relative URL
+ * @returns {Promise<{data: SitemapEntry[], status: number, statusText: string, headers: Headers}>}
+ * @throws {Error} If the request fails or returns a non-2xx status
+ */
+const children = async (url) => {
+    const target = normalize(url);
+    target.pathname += '.sitemap.xml';
+    target.searchParams.set('_', Date.now());
+
+    const response = await fetch(target, {
+        signal: AbortSignal.timeout(30000),
+        redirect: 'error'
+    });
+    
+    if (!response.ok) {
+        const error = new Error(`${response.status} ${response.statusText}`);
+        error.status = response.status;
+        throw error;
+    }
+
+    const text = await response.text();
+
+    return {
+        data: parseSitemap(text),
+        status: response.status,
+        statusText: response.statusText,
+        headers: response.headers
+    };
 };
 
 export default children;

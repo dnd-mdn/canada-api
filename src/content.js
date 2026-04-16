@@ -1,27 +1,35 @@
-import axios from "axios";
 import normalize from "./normalize.js";
-import { BASE_URL } from "./config.js";
 
 /**
- * Axios instance configured for fetching HTML content
- * @type {import('axios').AxiosInstance}
- * @description Returns raw HTML content
+ * Fetch HTML content for a canada.ca page
+ * @param {string|URL} url - Absolute or relative URL
+ * @returns {Promise<{data: string, status: number, statusText: string, headers: Headers}>}
+ * @throws {Error} If the request fails or returns a non-2xx status
  */
-const content = axios.create({
-    baseURL: BASE_URL,
-    timeout: 10000,
-    maxRedirects: 0
-});
+const content = async (url) => {
+    const target = normalize(url);
+    target.pathname += '.html';
+    target.searchParams.set('_', Date.now());
 
-// Transform URL
-content.interceptors.request.use(config => {
-    const url = normalize(config.url);
+    const response = await fetch(target, {
+        signal: AbortSignal.timeout(10000),
+        redirect: 'error'
+    });
 
-    url.pathname = url.pathname + '.html';
-    url.searchParams.set('_', Date.now());
+    if (!response.ok) {
+        const error = new Error(`${response.status} ${response.statusText}`);
+        error.status = response.status;
+        throw error;
+    }
 
-    config.url = url.toString();
-    return config;
-});
+    const data = await response.text();
+    
+    return { 
+        data, 
+        status: response.status, 
+        statusText: response.statusText, 
+        headers: response.headers 
+    };
+};
 
 export default content;
