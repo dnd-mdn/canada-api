@@ -1,6 +1,6 @@
 import axios from "axios";
-import normalize from "./normalize.mjs";
-import { BASE_URL } from "./config.mjs";
+import normalize from "./normalize.js";
+import { BASE_URL } from "./config.js";
 
 /**
  * Axios instance configured for fetching JCR metadata

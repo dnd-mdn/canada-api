@@ -1,5 +1,5 @@
 
-import { BASE_URL } from './config.mjs';
+import { BASE_URL } from './config.js';
 
 /**
  * Normalize a canada.ca URL to a clean pathname

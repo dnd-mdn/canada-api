@@ -3,9 +3,10 @@
 	"version": "5.0.1",
 	"description": "Cross platform API to fetch data from canada.ca",
 	"browser": "dist/ca.js",
-	"main": "src/index.mjs",
+	"type": "module",
+	"main": "src/index.js",
 	"scripts": {
-		"test": "node --test tests/**/*.test.mjs",
+		"test": "node --test tests/**/*.test.js",
 		"build": "webpack",
 		"dev": "webpack --mode development"
 	},

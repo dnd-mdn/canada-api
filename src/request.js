@@ -1,5 +1,5 @@
 import axios from "axios";
-import { BASE_URL } from "./config.mjs";
+import { BASE_URL } from "./config.js";
 
 /**
  * Axios instance configured for raw requests to canada.ca

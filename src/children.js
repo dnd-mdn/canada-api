@@ -1,7 +1,7 @@
 import axios from "axios";
 import { XMLParser, XMLValidator } from "fast-xml-parser";
-import normalize from "./normalize.mjs";
-import { BASE_URL } from "./config.mjs";
+import normalize from "./normalize.js";
+import { BASE_URL } from "./config.js";
 
 /**
  * Axios instance configured for fetching sitemap URLs

@@ -1,6 +1,6 @@
 import { test, describe } from 'node:test';
 import assert from 'node:assert';
-import normalize from '../src/normalize.mjs';
+import normalize from '../src/normalize.js';
 
 describe('normalize', () => {
     describe('valid inputs', () => {

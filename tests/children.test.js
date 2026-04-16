@@ -1,6 +1,6 @@
 import { test, describe } from 'node:test';
 import assert from 'node:assert';
-import { parseSitemap } from '../src/children.mjs';
+import { parseSitemap } from '../src/children.js';
 
 describe('parseSitemap', () => {
     describe('valid inputs', () => {

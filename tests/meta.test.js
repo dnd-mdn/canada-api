@@ -1,6 +1,6 @@
 import { test, describe } from 'node:test';
 import assert from 'node:assert';
-import { formatMeta } from '../src/meta.mjs';
+import { formatMeta } from '../src/meta.js';
 
 describe('formatMeta', () => {
 

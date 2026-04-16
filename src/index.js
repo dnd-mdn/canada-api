@@ -1,8 +1,8 @@
-import normalize from "./normalize.mjs";
-import request from "./request.mjs";
-import children from "./children.mjs";
-import content from "./content.mjs";
-import meta from "./meta.mjs";
+import normalize from "./normalize.js";
+import request from "./request.js";
+import children from "./children.js";
+import content from "./content.js";
+import meta from "./meta.js";
 
 /**
  * Canada API - Cross-platform client for fetching and parsing canada.ca data
