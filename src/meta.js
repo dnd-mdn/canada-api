@@ -22,8 +22,6 @@ meta.interceptors.request.use(config => {
 
     config.url = url.toString();
     return config;
-}, error => {
-    return Promise.reject(error);
 });
 
 // Process response data
@@ -31,8 +29,6 @@ meta.interceptors.response.use(response => {
     response.data = formatMeta(response.data);
 
     return response;
-}, error => {
-    return Promise.reject(error);
 });
 
 /**

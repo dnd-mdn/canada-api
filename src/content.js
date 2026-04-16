@@ -22,8 +22,6 @@ content.interceptors.request.use(config => {
 
     config.url = url.toString();
     return config;
-}, error => {
-    return Promise.reject(error);
 });
 
 export default content;

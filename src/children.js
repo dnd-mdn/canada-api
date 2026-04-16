@@ -25,8 +25,6 @@ children.interceptors.request.use(config => {
 
     config.url = url.toString();
     return config;
-}, error => {
-    return Promise.reject(error);
 });
 
 // Process response data
@@ -34,8 +32,6 @@ children.interceptors.response.use(response => {
     response.data = parseSitemap(response.data);
 
     return response;
-}, error => {
-    return Promise.reject(error);
 });
 
 /**
