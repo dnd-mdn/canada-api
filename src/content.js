@@ -1,4 +1,5 @@
 import normalize from "./normalize.js";
+import request from "./request.js";
 
 /**
  * Fetch HTML content for a canada.ca page
@@ -11,25 +12,10 @@ const content = async (url) => {
     target.pathname += '.html';
     target.searchParams.set('_', Date.now());
 
-    const response = await fetch(target, {
+    return request(target, { 
         signal: AbortSignal.timeout(10000),
         redirect: 'error'
     });
-
-    if (!response.ok) {
-        const error = new Error(`${response.status} ${response.statusText}`);
-        error.status = response.status;
-        throw error;
-    }
-
-    const data = await response.text();
-    
-    return { 
-        data, 
-        status: response.status, 
-        statusText: response.statusText, 
-        headers: response.headers 
-    };
 };
 
 export default content;

@@ -1,4 +1,5 @@
 import normalize from "./normalize.js";
+import request from "./request.js";
 
 /**
  * Month name to number mapping
@@ -90,24 +91,14 @@ const meta = async (url) => {
     target.pathname += '/_jcr_content.json';
     target.searchParams.set('_', Date.now());
 
-    const response = await fetch(target, {
+    const response = await request(target, {
         signal: AbortSignal.timeout(10000),
         redirect: 'error'
     });
-
-    if (!response.ok) {
-        const error = new Error(`${response.status} ${response.statusText}`);
-        error.status = response.status;
-        throw error;
-    }
-    
-    const data = await response.json();
     
     return {
-        data: formatMeta(data),
-        status: response.status,
-        statusText: response.statusText,
-        headers: response.headers
+        ...response,
+        data: formatMeta(JSON.parse(response.data))
     };
 };
 

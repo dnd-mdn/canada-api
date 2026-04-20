@@ -10,9 +10,14 @@ import { BASE_URL } from "./config.js";
 const request = async (url, options = {}) => {
     const response = await fetch(new URL(url, BASE_URL), {
         signal: AbortSignal.timeout(30000),
+        headers: {
+            'User-Agent': 'canada-api/5.0',
+            'Accept': '*/*',
+            ...options.headers
+        },
         ...options
     });
-    
+
     if (!response.ok) {
         const error = new Error(`${response.status} ${response.statusText}`);
         error.status = response.status;
@@ -20,12 +25,12 @@ const request = async (url, options = {}) => {
     }
 
     const data = await response.text();
-    
-    return { 
-        data, 
-        status: response.status, 
-        statusText: response.statusText, 
-        headers: response.headers 
+
+    return {
+        data,
+        status: response.status,
+        statusText: response.statusText,
+        headers: response.headers
     };
 };
 

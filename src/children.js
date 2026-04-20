@@ -1,5 +1,6 @@
 import { XMLParser, XMLValidator } from "fast-xml-parser";
 import normalize from "./normalize.js";
+import request from "./request.js";
 
 const parser = new XMLParser();
 
@@ -21,8 +22,8 @@ export const parseSitemap = (data) => {
     if (validation !== true) throw new Error(validation.err.msg);
 
     const result = parser.parse(data);
-
     const urls = result.urlset?.url || [];
+
     return (Array.isArray(urls) ? urls : [urls]).filter(item => item.loc).map(item => ({
         path: normalize(item.loc).pathname,
         lastmod: item.lastmod ? new Date(item.lastmod).toISOString() : null
@@ -40,24 +41,13 @@ const children = async (url) => {
     target.pathname += '.sitemap.xml';
     target.searchParams.set('_', Date.now());
 
-    const response = await fetch(target, {
-        signal: AbortSignal.timeout(30000),
+    const response = await request(target, {
         redirect: 'error'
     });
-    
-    if (!response.ok) {
-        const error = new Error(`${response.status} ${response.statusText}`);
-        error.status = response.status;
-        throw error;
-    }
-
-    const text = await response.text();
 
     return {
-        data: parseSitemap(text),
-        status: response.status,
-        statusText: response.statusText,
-        headers: response.headers
+        ...response,
+        data: parseSitemap(response.data)
     };
 };
 
