@@ -9,7 +9,7 @@ Cross platform API for fetching public data from [canada.ca](https://www.canada.
 ## Browser
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/canada-api@5.1.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/canada-api@5.1.1"></script>
 ```
 
 ## Node 18+
@@ -116,7 +116,8 @@ const response = await ca.request('/en/sr/srb/srvs/t-srvc-eng.html');
 
 ([English](#canada-api))
 
-<a name="canada-api-fr"></a>
+`<a name="canada-api-fr"></a>`
+
 # canada-api
 
 [![NPM Version](https://img.shields.io/npm/v/canada-api?branch=main)](https://www.npmjs.com/package/canada-api) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/dnd-mdn/canada-api/blob/main/LICENSE.md)
@@ -126,7 +127,7 @@ API multiplateforme pour récupérer des données publiques de [canada.ca](https
 ## Navigateur
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/canada-api@5.1.0"></script>
+<script src="https://cdn.jsdelivr.net/npm/canada-api@5.1.1"></script>
 ```
 
 ## Node 18+
