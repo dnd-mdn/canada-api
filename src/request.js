@@ -4,7 +4,7 @@ import { BASE_URL } from "./config.js";
  * Raw HTTP client for canada.ca
  * @param {string|URL} url - Relative or absolute URL on canada.ca
  * @param {RequestInit} [options] - Fetch options
- * @returns {Promise<{data: string, status: number, statusText: string, headers: Headers}>}
+ * @returns {Promise<{data: string|object, status: number, statusText: string, headers: Headers}>}
  * @throws {Error} If the request fails or returns a non-2xx status
  */
 const request = async (url, options = {}) => {
@@ -24,7 +24,8 @@ const request = async (url, options = {}) => {
         throw error;
     }
 
-    const data = await response.text();
+    const isJson = response.headers.get('content-type')?.includes('application/json');
+    const data = isJson ? await response.json() : await response.text();
 
     return {
         data,

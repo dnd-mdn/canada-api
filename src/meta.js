@@ -98,7 +98,7 @@ const meta = async (url) => {
     
     return {
         ...response,
-        data: formatMeta(JSON.parse(response.data))
+        data: formatMeta(response.data)
     };
 };
 
