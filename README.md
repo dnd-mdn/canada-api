@@ -106,10 +106,27 @@ Fetches JCR metadata for the given page. The following transformations are appli
 
 ### `ca.request`
 
-Raw HTTP client with `https://www.canada.ca` as the base URL. Use this for any requests not covered by the methods above. No URL transformation is applied.
+- `url` {string|URL} - Absolute or relative URL
+- `options` {RequestInit} - Optional fetch options
+- Returns: {Promise} Fulfills with a response object
+
+Raw HTTP client with `https://www.canada.ca` as the base URL. Use this for any requests not covered by the methods above. No URL transformation is applied. Response bodies with a `application/json` content type are automatically parsed.
 
 ```js
 const response = await ca.request('/en/sr/srb/srvs/t-srvc-eng.html');
+```
+
+All methods return the same response shape:
+
+```json
+{
+  "data": "...",
+  "status": 200,
+  "statusText": "OK",
+  "headers": {
+    "content-type": "text/html"
+  }
+}
 ```
 
 ---
@@ -186,8 +203,25 @@ Récupère les métadonnées JCR de la page donnée. Les transformations suivant
 
 ### `ca.request`
 
-Client HTTP brut avec `https://www.canada.ca` comme URL de base. Utilisez-le pour toute requête non couverte par les méthodes ci-dessus. Aucune transformation d'URL n'est appliquée.
+- `url` {string|URL} - URL absolue ou relative
+- `options` {RequestInit} - Options fetch optionnelles
+- Retourne: {Promise} Résout avec un objet réponse
+
+Client HTTP brut avec `https://www.canada.ca` comme URL de base. Utilisez-le pour toute requête non couverte par les méthodes ci-dessus. Aucune transformation d'URL n'est appliquée. Les corps de réponse avec un type de contenu `application/json` sont automatiquement analysés.
 
 ```js
 const response = await ca.request('/fr/sr/srb/srvs/t-srvc-fra.html');
+```
+
+Toutes les méthodes retournent la même structure de réponse :
+
+```json
+{
+  "data": "...",
+  "status": 200,
+  "statusText": "OK",
+  "headers": {
+    "content-type": "text/html"
+  }
+}
 ```
