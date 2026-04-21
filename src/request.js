@@ -21,6 +21,7 @@ const request = async (url, options = {}) => {
     if (!response.ok) {
         const error = new Error(`${response.status} ${response.statusText}`);
         error.status = response.status;
+        error.url = url.toString();
         throw error;
     }
 
