@@ -11,7 +11,7 @@ const request = async (url, options = {}) => {
     const response = await fetch(new URL(url, BASE_URL), {
         signal: AbortSignal.timeout(30000),
         headers: {
-            'User-Agent': 'canada-api/5.0',
+            'User-Agent': 'canada-api/5.1.2',
             'Accept': '*/*',
             ...options.headers
         },

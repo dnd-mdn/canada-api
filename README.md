@@ -189,5 +189,5 @@ Récupère les métadonnées JCR de la page donnée. Les transformations suivant
 Client HTTP brut avec `https://www.canada.ca` comme URL de base. Utilisez-le pour toute requête non couverte par les méthodes ci-dessus. Aucune transformation d'URL n'est appliquée.
 
 ```js
-const response = await ca.request.get('/fr/sr/srb/srvs/t-srvc-fra.html');
+const response = await ca.request('/fr/sr/srb/srvs/t-srvc-fra.html');
 ```
