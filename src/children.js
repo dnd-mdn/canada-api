@@ -33,7 +33,7 @@ export const parseSitemap = (data) => {
 /**
  * Fetch and parse sitemap children for a canada.ca page
  * @param {string|URL} url - Absolute or relative URL
- * @returns {Promise<{data: SitemapEntry[], status: number, statusText: string, headers: Headers}>}
+ * @returns {Promise<{data: SitemapEntry[], status: number, statusText: string, headers: Record<string, string>}>}
  * @throws {Error} If the request fails or returns a non-2xx status
  */
 const children = async (url) => {
@@ -45,10 +45,8 @@ const children = async (url) => {
         redirect: 'error'
     });
 
-    return {
-        ...response,
-        data: parseSitemap(response.data)
-    };
+    response.data = parseSitemap(response.data);
+    return response;
 };
 
 export default children;

@@ -96,10 +96,8 @@ const meta = async (url) => {
         redirect: 'error'
     });
     
-    return {
-        ...response,
-        data: formatMeta(response.data)
-    };
+    response.data = formatMeta(response.data);
+    return response;
 };
 
 export default meta;
