@@ -131,8 +131,6 @@ All methods return the same response shape:
 
 ---
 
-([English](#canada-api))
-
 # canada-api
 
 [![NPM Version](https://img.shields.io/npm/v/canada-api?branch=main)](https://www.npmjs.com/package/canada-api) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/dnd-mdn/canada-api/blob/main/LICENSE.md)
