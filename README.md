@@ -1,4 +1,4 @@
-([Français](#canada-api-fr))
+([Français](#canada-api-1))
 
 # canada-api
 
@@ -132,8 +132,6 @@ All methods return the same response shape:
 ---
 
 ([English](#canada-api))
-
-`<a name="canada-api-fr"></a>`
 
 # canada-api
 
