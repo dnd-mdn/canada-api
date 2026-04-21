@@ -83,7 +83,7 @@ export const formatMeta = (data) => {
 /**
  * Fetch and format JCR metadata for a canada.ca page
  * @param {string|URL} url - Absolute or relative URL
- * @returns {Promise<{data: Record<string, any>, status: number, statusText: string, headers: Headers}>}
+ * @returns {Promise<{data: Record<string, any>, status: number, statusText: string, headers: object}>}
  * @throws {Error} If the request fails or returns a non-2xx status
  */
 const meta = async (url) => {
