@@ -61,7 +61,11 @@ Fetches and parses the sitemap for the given page, returning its child pages. En
       "lastmod": "2022-09-20T00:00:00.000Z"
     }
   ],
-  "status": 200
+  "status": 200,
+  "statusText": "OK",
+  "headers": {
+    "content-type": "text/xml"
+  }
 }
 ```
 
@@ -74,8 +78,12 @@ Retrieves the HTML content of the page.
 
 ```json
 {
-  "data": "<!DOCTYPE html>\r\n....",
-  "status": 200
+  "data": "<!DOCTYPE html>...",
+  "status": 200,
+  "statusText": "OK",
+  "headers": {
+    "content-type": "text/html"
+  }
 }
 ```
 
@@ -100,7 +108,11 @@ Fetches JCR metadata for the given page. The following transformations are appli
     "fluidWidth": false,
     "peer": "/fr/ministere-defense-nationale/feuille-erable"
   },
-  "status": 200
+  "status": 200,
+  "statusText": "OK",
+  "headers": {
+    "content-type": "application/json"
+  }
 }
 ```
 
@@ -113,7 +125,7 @@ Fetches JCR metadata for the given page. The following transformations are appli
 Raw HTTP client with `https://www.canada.ca` as the base URL. Use this for any requests not covered by the methods above. No URL transformation is applied. Response bodies with a `application/json` content type are automatically parsed.
 
 ```js
-const response = await ca.request('/en/sr/srb/srvs/t-srvc-eng.html');
+const response = await ca.request('/en/department-national-defence.html');
 ```
 
 All methods return the same response shape:
@@ -176,12 +188,39 @@ Lève {Error} si l'URL n'est pas sur canada.ca ou si le chemin ne commence pas p
 
 Récupère et analyse le plan de site de la page donnée, retournant ses pages enfants. Les entrées sans élément `<loc>` sont ignorées.
 
+```json
+{
+  "data": [
+    {
+      "path": "/fr/ministere-defense-nationale/feuille-erable",
+      "lastmod": "2022-09-20T00:00:00.000Z"
+    }
+  ],
+  "status": 200,
+  "statusText": "OK",
+  "headers": {
+    "content-type": "text/xml"
+  }
+}
+```
+
 ### `ca.content(url)`
 
 - `url` {string|URL} - URL absolue ou relative
 - Retourne: {Promise} Résout avec une réponse dont `data` est la chaîne HTML brute
 
 Récupère le contenu HTML de la page.
+
+```json
+{
+  "data": "<!DOCTYPE html>...",
+  "status": 200,
+  "statusText": "OK",
+  "headers": {
+    "content-type": "text/html"
+  }
+}
+```
 
 ### `ca.meta(url)`
 
@@ -197,6 +236,21 @@ Récupère les métadonnées JCR de la page donnée. Les transformations suivant
 - Les clés sont triées alphabétiquement
 - Un champ `peer` normalisé est ajouté lorsque `gcAltLanguagePeer` est présent
 
+```json
+{
+  "data": {
+    "cq:lastModified": "2022-10-25T19:16:28.000Z",
+    "fluidWidth": false,
+    "peer": "/en/department-national-defence/maple-leaf"
+  },
+  "status": 200,
+  "statusText": "OK",
+  "headers": {
+    "content-type": "application/json"
+  }
+}
+```
+
 ### `ca.request`
 
 - `url` {string|URL} - URL absolue ou relative
@@ -206,7 +260,7 @@ Récupère les métadonnées JCR de la page donnée. Les transformations suivant
 Client HTTP brut avec `https://www.canada.ca` comme URL de base. Utilisez-le pour toute requête non couverte par les méthodes ci-dessus. Aucune transformation d'URL n'est appliquée. Les corps de réponse avec un type de contenu `application/json` sont automatiquement analysés.
 
 ```js
-const response = await ca.request('/fr/sr/srb/srvs/t-srvc-fra.html');
+const response = await ca.request('/fr/ministere-defense-nationale.html');
 ```
 
 Toutes les méthodes retournent la même structure de réponse :
