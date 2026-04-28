@@ -100,13 +100,4 @@ describe('parseSitemap', () => {
             assert.deepStrictEqual(result, []);
         });
     });
-
-    describe('invalid inputs', () => {
-        test('throws on invalid XML', () => {
-            const xml = `<urlset><url><loc>https://www.canada.ca/en/page-one.html</loc></urlset>`;
-            assert.throws(() => {
-                parseSitemap(xml);
-            }, /Expected closing tag/);
-        });
-    });
 });

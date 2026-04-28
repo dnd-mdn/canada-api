@@ -1,8 +1,5 @@
-import { XMLParser, XMLValidator } from "fast-xml-parser";
 import normalize from "./normalize.js";
 import request from "./request.js";
-
-const parser = new XMLParser();
 
 /**
  * Represents a single URL entry from a sitemap
@@ -15,20 +12,20 @@ const parser = new XMLParser();
  * Parse XML sitemap data into structured URL entries
  * @param {string} data - Raw XML sitemap content
  * @returns {SitemapEntry[]} Array of sitemap entries with path and lastmod. Entries missing a `<loc>` element are skipped.
- * @throws {Error} If the XML is malformed or invalid
  */
-export const parseSitemap = (data) => {
-    const validation = XMLValidator.validate(data);
-    if (validation !== true) throw new Error(validation.err.msg);
-
-    const result = parser.parse(data);
-    const urls = result.urlset?.url || [];
-
-    return (Array.isArray(urls) ? urls : [urls]).filter(item => item.loc).map(item => ({
-        path: normalize(item.loc).pathname,
-        lastmod: item.lastmod ? new Date(item.lastmod).toISOString() : null
-    }));
-};
+export const parseSitemap = (xml) => {
+    return [...xml.matchAll(/<url>([\s\S]*?)<\/url>/g)]
+        .map(([, inner]) => {
+            const loc = inner.match(/<loc>([\s\S]*?)<\/loc>/)?.[1];
+            const lastmod = inner.match(/<lastmod>([\s\S]*?)<\/lastmod>/)?.[1];
+            return { loc, lastmod };
+        })
+        .filter(item => item.loc)
+        .map(item => ({
+            path: normalize(item.loc).pathname,
+            lastmod: item.lastmod ? new Date(item.lastmod).toISOString() : null,
+        }));
+}
 
 /**
  * Fetch and parse sitemap children for a canada.ca page
