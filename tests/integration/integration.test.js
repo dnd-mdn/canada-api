@@ -48,8 +48,44 @@ describe('integration', () => {
             await ca.request('/en/this-page-does-not-exist.html');
             assert.fail('Expected error was not thrown');
         } catch (error) {
-            assert.strictEqual(error.status, 404);
+            assert.ok(error.message.includes('404'));
+            assert.strictEqual(typeof error.url, 'string');
+        }
+    });
+
+    test('request attaches url to http errors', async () => {
+        try {
+            await ca.request('/en/this-page-does-not-exist.html');
+            assert.fail('Expected error was not thrown');
+        } catch (error) {
+            assert.ok(error.url.startsWith('https://www.canada.ca/'));
+        }
+    });
+
+    test('request throws with url set on timeout', async () => {
+        try {
+            await ca.request(URL + '.html', {
+                signal: AbortSignal.timeout(1)
+            });
+            assert.fail('Expected error was not thrown');
+        } catch (error) {
             assert.strictEqual(typeof error.message, 'string');
+            assert.strictEqual(typeof error.url, 'string');
+            assert.ok(error.url.startsWith('https://www.canada.ca/'));
+        }
+    });
+
+    test('request throws with url set on redirect error', async () => {
+        try {
+            // canada.ca root redirects to /en/index.html
+            await ca.request('https://www.canada.ca/en/index.html', {
+                redirect: 'error'
+            });
+            assert.fail('Expected error was not thrown');
+        } catch (error) {
+            assert.strictEqual(typeof error.message, 'string');
+            assert.strictEqual(typeof error.url, 'string');
+            assert.ok(error.url.startsWith('https://www.canada.ca/'));
         }
     });
 });

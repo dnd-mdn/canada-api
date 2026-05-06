@@ -8,26 +8,43 @@ import { BASE_URL } from "./config.js";
  * @throws {Error} If the request fails or returns a non-2xx status
  */
 const request = async (url, options = {}) => {
-    const response = await fetch(new URL(url, BASE_URL), {
-        signal: AbortSignal.timeout(30000),
-        headers: {
-            'User-Agent': 'canada-api/5.1.4',
-            'Accept': '*/*',
-            ...options.headers
-        },
-        ...options
-    });
+    url = new URL(url, BASE_URL);
+
+    const { headers: customHeaders = {}, ...requestOptions } = options;
+
+    let response;
+    try {
+        response = await fetch(url, {
+            signal: AbortSignal.timeout(30000),
+            ...requestOptions,
+            headers: {
+                'User-Agent': 'canada-api/5.1.4',
+                'Accept': '*/*',
+                ...customHeaders
+            }
+        });
+    } catch (e) {
+        e.url = url.toString();
+        throw e;
+    }
 
     if (!response.ok) {
         const error = new Error(`${response.status} ${response.statusText}`);
-        error.status = response.status;
         error.url = url.toString();
         throw error;
     }
 
-    const text = await response.text();
+    let data = await response.text();
     const isJson = response.headers.get('content-type')?.includes('application/json');
-    const data = isJson ? JSON.parse(text) : text;
+
+    if (isJson) {
+        try {
+            data = JSON.parse(data);
+        } catch (e) {
+            e.url = url.toString();
+            throw e;
+        }
+    }
 
     return {
         data,
