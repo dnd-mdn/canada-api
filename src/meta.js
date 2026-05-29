@@ -89,10 +89,8 @@ export const formatMeta = (data) => {
 const meta = async (url) => {
     const target = normalize(url);
     target.pathname += '/_jcr_content.json';
-    target.searchParams.set('_', Date.now());
 
     const response = await request(target, {
-        signal: AbortSignal.timeout(10000),
         redirect: 'error'
     });
     

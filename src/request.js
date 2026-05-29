@@ -1,5 +1,8 @@
 import { BASE_URL } from "./config.js";
 
+/** @type {number} Default request timeout in ms. Callers can override by passing a `signal` in options. */
+const DEFAULT_TIMEOUT = 30000;
+
 /**
  * Raw HTTP client for canada.ca
  * @param {string|URL} url - Relative or absolute URL on canada.ca
@@ -9,13 +12,14 @@ import { BASE_URL } from "./config.js";
  */
 const request = async (url, options = {}) => {
     url = new URL(url, BASE_URL);
+    url.searchParams.set('_', Date.now());
 
     const { headers: customHeaders = {}, ...requestOptions } = options;
 
     let response;
     try {
         response = await fetch(url, {
-            signal: AbortSignal.timeout(30000),
+            signal: AbortSignal.timeout(DEFAULT_TIMEOUT),
             ...requestOptions,
             headers: {
                 'User-Agent': 'canada-api/5.1.5',
@@ -29,7 +33,7 @@ const request = async (url, options = {}) => {
     }
 
     if (!response.ok) {
-        const error = new Error(`${response.status} ${response.statusText}`);
+        const error = new Error(`Request to ${url} failed: ${response.status} ${response.statusText}`);
         error.url = url.toString();
         throw error;
     }
@@ -41,8 +45,9 @@ const request = async (url, options = {}) => {
         try {
             data = JSON.parse(data);
         } catch (e) {
-            e.url = url.toString();
-            throw e;
+            const error = new Error(`Failed to parse JSON response from ${url}: ${e.message}`);
+            error.url = url.toString();
+            throw error;
         }
     }
 

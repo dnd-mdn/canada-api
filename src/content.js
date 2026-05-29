@@ -10,10 +10,8 @@ import request from "./request.js";
 const content = async (url) => {
     const target = normalize(url);
     target.pathname += '.html';
-    target.searchParams.set('_', Date.now());
 
-    return request(target, { 
-        signal: AbortSignal.timeout(10000),
+    return request(target, {
         redirect: 'error'
     });
 };

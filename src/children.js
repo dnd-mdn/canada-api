@@ -36,7 +36,6 @@ export const parseSitemap = (xml) => {
 const children = async (url) => {
     const target = normalize(url);
     target.pathname += '.sitemap.xml';
-    target.searchParams.set('_', Date.now());
 
     const response = await request(target, {
         redirect: 'error'
