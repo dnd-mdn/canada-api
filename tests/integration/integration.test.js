@@ -51,6 +51,8 @@ describe('integration', () => {
         assert.strictEqual(typeof res.statusText, 'string');
         assert.strictEqual(typeof res.headers, 'object');
         assert.strictEqual(typeof res.data, 'object');
+        assert.ok(!Array.isArray(res.data));
+        assert.strictEqual(res.data['jcr:primaryType'], 'dam:Asset');
     });
 
     test('request returns raw response', async () => {
