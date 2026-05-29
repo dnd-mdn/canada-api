@@ -9,7 +9,7 @@ Cross platform API for fetching public data from [canada.ca](https://www.canada.
 ## Browser
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/canada-api@5.1.5"></script>
+<script src="https://cdn.jsdelivr.net/npm/canada-api@5.1.6"></script>
 ```
 
 ## Node 18+
@@ -152,7 +152,7 @@ API multiplateforme pour récupérer des données publiques de [canada.ca](https
 ## Navigateur
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/canada-api@5.1.4"></script>
+<script src="https://cdn.jsdelivr.net/npm/canada-api@5.1.6"></script>
 ```
 
 ## Node 18+

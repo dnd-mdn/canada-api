@@ -22,7 +22,7 @@ const request = async (url, options = {}) => {
             signal: AbortSignal.timeout(DEFAULT_TIMEOUT),
             ...requestOptions,
             headers: {
-                'User-Agent': 'canada-api/5.1.5',
+                'User-Agent': 'canada-api/5.1.6',
                 'Accept': '*/*',
                 ...customHeaders
             }
