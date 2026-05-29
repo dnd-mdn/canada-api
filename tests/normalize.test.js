@@ -36,6 +36,11 @@ describe('normalize', () => {
             const url = normalize('https://www.canada.ca/en/department-national-defence/maple-leaf.html?version=1#section2');
             assert.strictEqual(url.pathname, '/en/department-national-defence/maple-leaf');
         });
+
+        test('accepts DAM asset URL', () => {
+            const url = normalize('https://www.canada.ca/content/dam/dnd-mdn/documents/json/maple-en.json');
+            assert.strictEqual(url.pathname, '/content/dam/dnd-mdn/documents/json/maple-en.json');
+        });
     });
 
     describe('path normalization', () => {

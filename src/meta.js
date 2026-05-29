@@ -81,14 +81,19 @@ export const formatMeta = (data) => {
 }
 
 /**
- * Fetch and format JCR metadata for a canada.ca page
+ * Fetch and format metadata
  * @param {string|URL} url - Absolute or relative URL
- * @returns {Promise<{data: Record<string, any>, status: number, statusText: string, headers: object}>}
+ * @returns {Promise<{data: Record<string, any>|any, status: number, statusText: string, headers: object}>}
  * @throws {Error} If the request fails or returns a non-2xx status
  */
 const meta = async (url) => {
     const target = normalize(url);
-    target.pathname += '/_jcr_content.json';
+
+    if (target.pathname.startsWith('/content/dam/')) {
+        target.pathname += '/.json'
+    } else {
+        target.pathname += '/_jcr_content.json';
+    }
 
     const response = await request(target, {
         redirect: 'error'

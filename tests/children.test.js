@@ -1,6 +1,6 @@
 import { test, describe } from 'node:test';
 import assert from 'node:assert';
-import { parseSitemap } from '../src/children.js';
+import children, { parseSitemap } from '../src/children.js';
 
 describe('parseSitemap', () => {
     describe('valid inputs', () => {
@@ -99,5 +99,16 @@ describe('parseSitemap', () => {
             const result = parseSitemap(xml);
             assert.deepStrictEqual(result, []);
         });
+    });
+});
+
+describe('children', () => {
+    test('throws for DAM asset paths', async () => {
+        await assert.rejects(
+            () => children('https://www.canada.ca/content/dam/dnd-mdn/documents/json/maple-en.json'),
+            {
+                message: /children not available for DAM assets/
+            }
+        );
     });
 });

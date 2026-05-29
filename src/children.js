@@ -10,7 +10,7 @@ import request from "./request.js";
 
 /**
  * Parse XML sitemap data into structured URL entries
- * @param {string} data - Raw XML sitemap content
+ * @param {string} xml - Raw XML sitemap content
  * @returns {SitemapEntry[]} Array of sitemap entries with path and lastmod. Entries missing a `<loc>` element are skipped.
  */
 export const parseSitemap = (xml) => {
@@ -29,12 +29,17 @@ export const parseSitemap = (xml) => {
 
 /**
  * Fetch and parse sitemap children for a canada.ca page
- * @param {string|URL} url - Absolute or relative URL
+ * @param {string|URL} url - Absolute or relative URL for a canada.ca page
  * @returns {Promise<{data: SitemapEntry[], status: number, statusText: string, headers: object}>}
- * @throws {Error} If the request fails or returns a non-2xx status
+ * @throws {Error} If the URL points to a DAM asset path or if the request fails/returns a non-2xx status
  */
 const children = async (url) => {
     const target = normalize(url);
+
+    if (target.pathname.startsWith('/content/dam/')) {
+        throw new Error(`children not available for DAM assets: "${target.pathname}"`);
+    }
+
     target.pathname += '.sitemap.xml';
 
     const response = await request(target, {

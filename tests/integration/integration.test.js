@@ -3,6 +3,7 @@ import assert from 'node:assert';
 import ca from '../../src/index.js';
 
 const URL = '/en/department-national-defence/maple-leaf';
+const ASSET_URL = 'https://www.canada.ca/content/dam/dnd-mdn/documents/json/maple-en.json';
 
 describe('integration', () => {
     test('children returns array of sitemap entries', async () => {
@@ -25,6 +26,16 @@ describe('integration', () => {
         assert.ok(res.data.toLowerCase().includes('<!doctype html>'));
     });
 
+    test('content returns dam asset json data', async () => {
+        const res = await ca.content(ASSET_URL);
+        assert.strictEqual(res.status, 200);
+        assert.strictEqual(typeof res.statusText, 'string');
+        assert.strictEqual(typeof res.headers, 'object');
+        assert.strictEqual(typeof res.data, 'object');
+        assert.ok(Array.isArray(res.data.data));
+        assert.ok(res.data.data.length > 0);
+    });
+
     test('meta returns formatted metadata object', async () => {
         const res = await ca.meta(URL);
         assert.strictEqual(res.status, 200);
@@ -32,6 +43,14 @@ describe('integration', () => {
         assert.strictEqual(typeof res.headers, 'object');
         assert.strictEqual(typeof res.data, 'object');
         assert.ok(!Array.isArray(res.data));
+    });
+
+    test('meta returns dam asset json data', async () => {
+        const res = await ca.meta(ASSET_URL);
+        assert.strictEqual(res.status, 200);
+        assert.strictEqual(typeof res.statusText, 'string');
+        assert.strictEqual(typeof res.headers, 'object');
+        assert.strictEqual(typeof res.data, 'object');
     });
 
     test('request returns raw response', async () => {

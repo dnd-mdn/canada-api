@@ -9,7 +9,7 @@ Cross platform API for fetching public data from [canada.ca](https://www.canada.
 ## Browser
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/canada-api@5.1.6"></script>
+<script src="https://cdn.jsdelivr.net/npm/canada-api@5.1.7"></script>
 ```
 
 ## Node 18+
@@ -72,9 +72,9 @@ Fetches and parses the sitemap for the given page, returning its child pages. En
 ### `ca.content(url)`
 
 - `url` {string|URL} - Absolute or relative URL
-- Returns: {Promise} Fulfills with a response whose `data` is the raw HTML string
+- Returns: {Promise} Fulfills with a response whose `data` is the raw HTML string, or parsed JSON for DAM asset URLs
 
-Retrieves the HTML content of the page.
+Retrieves the HTML content of the page. DAM asset URLs under `/content/dam/` are passed through without forcing a `.html` suffix.
 
 ```json
 {
@@ -90,9 +90,9 @@ Retrieves the HTML content of the page.
 ### `ca.meta(url)`
 
 - `url` {string|URL} - Absolute or relative URL
-- Returns: {Promise} Fulfills with a response whose `data` is a formatted metadata object
+- Returns: {Promise} Fulfills with a response whose `data` is a formatted metadata object, or parsed JSON for DAM asset URLs
 
-Fetches JCR metadata for the given page. The following transformations are applied:
+Fetches JCR metadata for the given page. For DAM asset URLs under `/content/dam/`, the asset JSON response is returned. The following transformations are applied to page metadata:
 
 - String `"true"` / `"false"` values are converted to booleans
 - `@TypeHint` properties are removed
@@ -152,7 +152,7 @@ API multiplateforme pour récupérer des données publiques de [canada.ca](https
 ## Navigateur
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/canada-api@5.1.6"></script>
+<script src="https://cdn.jsdelivr.net/npm/canada-api@5.1.7"></script>
 ```
 
 ## Node 18+
@@ -207,9 +207,9 @@ Récupère et analyse le plan de site de la page donnée, retournant ses pages e
 ### `ca.content(url)`
 
 - `url` {string|URL} - URL absolue ou relative
-- Retourne: {Promise} Résout avec une réponse dont `data` est la chaîne HTML brute
+- Retourne: {Promise} Résout avec une réponse dont `data` est la chaîne HTML brute, ou le JSON analysé pour les URL d'actifs DAM
 
-Récupère le contenu HTML de la page.
+Récupère le contenu HTML de la page. Les URL d'actifs DAM sous `/content/dam/` sont transmises sans forcer le suffixe `.html`.
 
 ```json
 {
@@ -225,9 +225,9 @@ Récupère le contenu HTML de la page.
 ### `ca.meta(url)`
 
 - `url` {string|URL} - URL absolue ou relative
-- Retourne: {Promise} Résout avec une réponse dont `data` est un objet de métadonnées formaté
+- Retourne: {Promise} Résout avec une réponse dont `data` est un objet de métadonnées formaté, ou le JSON analysé pour les URL d'actifs DAM
 
-Récupère les métadonnées JCR de la page donnée. Les transformations suivantes sont appliquées :
+Récupère les métadonnées JCR de la page donnée. Pour les URL d'actifs DAM sous `/content/dam/`, la réponse JSON de l'actif est retournée. Les transformations suivantes sont appliquées aux métadonnées de page :
 
 - Les valeurs `"true"` / `"false"` sont converties en booléens
 - Les propriétés `@TypeHint` sont supprimées
