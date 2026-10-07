@@ -1,7 +1,4 @@
-import { BASE_URL } from "./config.js";
-
-/** @type {number} Default request timeout in ms. Callers can override by passing a `signal` in options. */
-const DEFAULT_TIMEOUT = 30000;
+import { BASE_URL, USER_AGENT, DEFAULT_TIMEOUT } from "./config.js";
 
 /**
  * Raw HTTP client for canada.ca
@@ -22,7 +19,7 @@ const request = async (url, options = {}) => {
             signal: AbortSignal.timeout(DEFAULT_TIMEOUT),
             ...requestOptions,
             headers: {
-                'User-Agent': 'canada-api/5.1.7',
+                'User-Agent': USER_AGENT,
                 'Accept': '*/*',
                 ...customHeaders
             }
