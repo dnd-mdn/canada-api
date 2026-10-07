@@ -1,5 +1,13 @@
 # Changelog
 
+## Unreleased
+
+- The `User-Agent` header is now derived from the package version instead of being hard-coded.
+- Moved the default request timeout into the shared config module.
+- Errors for non-2xx responses now include `status` and `statusText`.
+- Minimum Node.js version is now 18.20, required for JSON import attributes.
+- Updated dev dependencies (`fast-uri` 3.1.8) to resolve security advisories.
+
 ## 5.1.7 - 2026-05-29
 
 - Handle DAM assets (`/content/dam/...`) in `content()` and `meta()`: asset URLs skip the `.html` suffix and return the raw asset JSON instead of the page metadata transform.
@@ -8,7 +16,7 @@
 ## 5.1.6 - 2026-05-28
 
 - Moved cache-busting query parameter into `request()`.
-- Removed request timeouts; updated tests accordingly.
+- Removed the 10 second per-method timeouts in `content()` and `meta()`; all methods now use the 30 second default in `request()`, which callers can override by passing their own `signal`. Updated tests accordingly.
 
 ## 5.1.5 - 2026-05-06
 

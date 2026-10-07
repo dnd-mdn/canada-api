@@ -2,7 +2,7 @@
 
 # canada-api
 
-[![NPM Version](https://img.shields.io/npm/v/canada-api?branch=main)](https://www.npmjs.com/package/canada-api) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/dnd-mdn/canada-api/blob/main/LICENSE.md)
+[![NPM Version](https://img.shields.io/npm/v/canada-api?branch=main)](https://www.npmjs.com/package/canada-api) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/dnd-mdn/canada-api/blob/main/LICENSE)
 
 Cross platform API for fetching public data from [canada.ca](https://www.canada.ca).
 
@@ -141,11 +141,21 @@ All methods return the same response shape:
 }
 ```
 
+If a request fails, the returned promise rejects with an `Error` that includes the request `url`. For non-2xx responses, the error also includes `status` and `statusText`.
+
+```js
+try {
+  await ca.content('/en/page-that-does-not-exist');
+} catch (error) {
+  console.log(error.status); // 404
+}
+```
+
 ---
 
 # canada-api
 
-[![NPM Version](https://img.shields.io/npm/v/canada-api?branch=main)](https://www.npmjs.com/package/canada-api) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/dnd-mdn/canada-api/blob/main/LICENSE.md)
+[![NPM Version](https://img.shields.io/npm/v/canada-api?branch=main)](https://www.npmjs.com/package/canada-api) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/dnd-mdn/canada-api/blob/main/LICENSE)
 
 API multiplateforme pour récupérer des données publiques de [canada.ca](https://www.canada.ca).
 
@@ -273,5 +283,15 @@ Toutes les méthodes retournent la même structure de réponse :
   "headers": {
     "content-type": "text/html"
   }
+}
+```
+
+Si une requête échoue, la promesse est rejetée avec une `Error` qui inclut l'`url` de la requête. Pour les réponses hors de la plage 2xx, l'erreur inclut aussi `status` et `statusText`.
+
+```js
+try {
+  await ca.content('/fr/page-inexistante');
+} catch (error) {
+  console.log(error.status); // 404
 }
 ```

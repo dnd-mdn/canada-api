@@ -70,6 +70,8 @@ describe('integration', () => {
             assert.fail('Expected error was not thrown');
         } catch (error) {
             assert.ok(error.message.includes('404'));
+            assert.strictEqual(error.status, 404);
+            assert.strictEqual(typeof error.statusText, 'string');
             assert.ok(error.url.startsWith('https://www.canada.ca/'));
         }
     });

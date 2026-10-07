@@ -5,7 +5,7 @@ import { BASE_URL, USER_AGENT, DEFAULT_TIMEOUT } from "./config.js";
  * @param {string|URL} url - Relative or absolute URL on canada.ca
  * @param {RequestInit} [options] - Fetch options
  * @returns {Promise<{data: string|object, status: number, statusText: string, headers: object}>}
- * @throws {Error} If the request fails or returns a non-2xx status
+ * @throws {Error} If the request fails or returns a non-2xx status. Errors include `url`; non-2xx errors also include `status` and `statusText`.
  */
 const request = async (url, options = {}) => {
     url = new URL(url, BASE_URL);
@@ -32,6 +32,8 @@ const request = async (url, options = {}) => {
     if (!response.ok) {
         const error = new Error(`Request to ${url} failed: ${response.status} ${response.statusText}`);
         error.url = url.toString();
+        error.status = response.status;
+        error.statusText = response.statusText;
         throw error;
     }
 
