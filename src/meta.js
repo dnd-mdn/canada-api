@@ -36,9 +36,9 @@ function formatDate(text) {
     }
 
     // RFC1123 format
-    let m = /^\w{3} (\w{3}) (\d{2}) (\d{4}) ([\d:]{8}) GMT([\-+]\d{4})$/.exec(text)
+    let m = /^\w{3} (\w{3}) (\d{1,2}) (\d{4}) ([\d:]{8}) GMT([\-+]\d{4})$/.exec(text)
     if (m) {
-        return new Date(`${m[3]}-${months[m[1]]}-${m[2]}T${m[4]}${m[5]}`).toISOString()
+        return new Date(`${m[3]}-${months[m[1]]}-${m[2].padStart(2, '0')}T${m[4]}${m[5]}`).toISOString()
     }
 
     return text
@@ -50,7 +50,7 @@ function formatDate(text) {
  * @returns {Record<string, any>} Formatted metadata with normalized types and sorted keys
  * @description Converts string booleans to native booleans, formats dates to ISO 8601,
  * removes @TypeHint properties and empty arrays, sorts keys alphabetically, and adds a
- * normalized `peer` field when `gcAltLanguagePeer` is present.
+ * normalized `peer` field when `gcAltLanguagePeer` is present and normalizable.
  */
 export const formatMeta = (data) => {
     const result = {}
@@ -65,7 +65,11 @@ export const formatMeta = (data) => {
             result[key] = false
         } else if (key === 'gcAltLanguagePeer') {
             result[key] = value
-            result['peer'] = normalize(value).pathname
+            try {
+                result['peer'] = normalize(value).pathname
+            } catch {
+                // Non-normalizable peer URLs (e.g. external links) leave `peer` unset
+            }
         } else if (typeof value === 'string') {
             result[key] = formatDate(value.trim())
         } else {

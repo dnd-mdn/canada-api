@@ -1,11 +1,14 @@
 # Changelog
 
-## Unreleased
+## 5.2.0 - 2026-11-10
 
+- `meta()` no longer rejects the whole response when `gcAltLanguagePeer` cannot be normalized; the raw value is kept and `peer` is omitted.
+- `formatDate` now accepts single-digit days in `Date.prototype.toString()`-format dates (e.g. `Wed Nov 5 2019 …`).
+- `children()` now skips sitemap entries with an unparseable `<lastmod>` instead of rejecting the whole sitemap.
 - The `User-Agent` header is now derived from the package version instead of being hard-coded.
 - Moved the default request timeout into the shared config module.
 - Errors for non-2xx responses now include `status` and `statusText`.
-- Minimum Node.js version is now 18.20, required for JSON import attributes.
+- Minimum Node.js version is now 22, required for JSON import attributes (`with` syntax, a Node 20.10+ feature; 18 and 20 are EOL).
 - Updated dev dependencies (`fast-uri` 3.1.8) to resolve security advisories.
 
 ## 5.1.7 - 2026-05-29

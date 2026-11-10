@@ -11,7 +11,7 @@ import request from "./request.js";
 /**
  * Parse XML sitemap data into structured URL entries
  * @param {string} xml - Raw XML sitemap content
- * @returns {SitemapEntry[]} Array of sitemap entries with path and lastmod. Entries missing a `<loc>` element are skipped.
+ * @returns {SitemapEntry[]} Array of sitemap entries with path and lastmod. Entries missing a `<loc>` element, or with an unparseable `<lastmod>`, are skipped.
  */
 export const parseSitemap = (xml) => {
     return [...xml.matchAll(/<url>([\s\S]*?)<\/url>/g)]
@@ -21,6 +21,7 @@ export const parseSitemap = (xml) => {
             return { loc, lastmod };
         })
         .filter(item => item.loc)
+        .filter(item => !item.lastmod || !Number.isNaN(Date.parse(item.lastmod)))
         .map(item => ({
             path: normalize(item.loc).pathname,
             lastmod: item.lastmod ? new Date(item.lastmod).toISOString() : null,

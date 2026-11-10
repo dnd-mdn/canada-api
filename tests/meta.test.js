@@ -59,6 +59,16 @@ describe('formatMeta', () => {
             });
         });
 
+        test('converts dates with single-digit days to ISO8601 format', () => {
+            const data = {
+                publishDate: 'Wed Nov 5 2019 13:17:13 GMT-0500'
+            };
+            const result = formatMeta(data);
+            assert.deepStrictEqual(result, {
+                publishDate: '2019-11-05T18:17:13.000Z'
+            });
+        });
+
         test('preserves non-date strings', () => {
             const data = {
                 title: 'Not a date',
@@ -102,6 +112,13 @@ describe('formatMeta', () => {
                 gcAltLanguagePeer: '/content/canadasite/fr/ministere-defense-nationale/feuille-derable.html',
                 peer: '/fr/ministere-defense-nationale/feuille-derable'
             });
+        });
+
+        test('keeps raw gcAltLanguagePeer and omits peer when it cannot be normalized', () => {
+            for (const value of ['/some/path', 'https://example.com/en/x']) {
+                const result = formatMeta({ gcAltLanguagePeer: value });
+                assert.deepStrictEqual(result, { gcAltLanguagePeer: value });
+            }
         });
     });
 });

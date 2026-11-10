@@ -99,6 +99,27 @@ describe('parseSitemap', () => {
             const result = parseSitemap(xml);
             assert.deepStrictEqual(result, []);
         });
+
+        test('ignores entries with unparseable lastmod', () => {
+            const xml = `<?xml version="1.0" encoding="UTF-8"?>
+            <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+                <url>
+                    <loc>https://www.canada.ca/en/good-page</loc>
+                    <lastmod>2024-04-09T15:40:22.032-04:00</lastmod>
+                </url>
+                <url>
+                    <loc>https://www.canada.ca/en/bad-date-page</loc>
+                    <lastmod>not-a-date</lastmod>
+                </url>
+            </urlset>`;
+            const result = parseSitemap(xml);
+            assert.deepStrictEqual(result, [
+                {
+                    path: '/en/good-page',
+                    lastmod: '2024-04-09T19:40:22.032Z'
+                }
+            ]);
+        });
     });
 });
 

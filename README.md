@@ -9,10 +9,10 @@ Cross platform API for fetching public data from [canada.ca](https://www.canada.
 ## Browser
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/canada-api@5.1.7"></script>
+<script src="https://cdn.jsdelivr.net/npm/canada-api@5.2.0/dist/ca.js"></script>
 ```
 
-## Node 18+
+The canada.ca API in a package. Built for Node 22+ and the modern web. No dependencies, no config, no noise.
 
 ### Install
 
@@ -32,7 +32,7 @@ import ca from 'canada-api'
 npm test
 ```
 
-Tests use the built-in Node.js test runner (`node:test`) and require Node 18 or later.
+The Canada.ca API in a package. Built for Node 22+ and the modern web. No dependencies, no config, no noise.
 
 ## API
 
@@ -51,7 +51,7 @@ Throws {Error} if the URL is not on canada.ca or the path does not start with `/
 - `url` {string|URL} - Absolute or relative URL
 - Returns: {Promise} Fulfills with a response whose `data` is an array of sitemap entries
 
-Fetches and parses the sitemap for the given page, returning its child pages. Entries without a `<loc>` element are skipped.
+Fetches and parses the sitemap for the given page, returning its child pages. Entries without a `<loc>` element, or with an unparseable `<lastmod>`, are skipped.
 
 ```json
 {
@@ -162,10 +162,10 @@ API multiplateforme pour récupérer des données publiques de [canada.ca](https
 ## Navigateur
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/canada-api@5.1.7"></script>
+<script src="https://cdn.jsdelivr.net/npm/canada-api@5.2.0/dist/ca.js"></script>
 ```
 
-## Node 18+
+Built for Node.js 22+ and modern browsers. Uses native `fetch`, `node:url`, and `node:util` — no external dependencies.
 
 ### Installation
 
@@ -196,7 +196,7 @@ Lève {Error} si l'URL n'est pas sur canada.ca ou si le chemin ne commence pas p
 - `url` {string|URL} - URL absolue ou relative
 - Retourne: {Promise} Résout avec une réponse dont `data` est un tableau d'entrées du plan de site
 
-Récupère et analyse le plan de site de la page donnée, retournant ses pages enfants. Les entrées sans élément `<loc>` sont ignorées.
+Récupère et analyse le plan de site de la page donnée, retournant ses pages enfants. Les entrées sans élément `<loc>`, ou avec un `<lastmod>` non analysable, sont ignorées.
 
 ```json
 {
