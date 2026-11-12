@@ -4,15 +4,13 @@
 
 [![NPM Version](https://img.shields.io/npm/v/canada-api?branch=main)](https://www.npmjs.com/package/canada-api) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/dnd-mdn/canada-api/blob/main/LICENSE)
 
-Cross platform API for fetching public data from [canada.ca](https://www.canada.ca).
+Cross platform API for fetching public data from [canada.ca](https://www.canada.ca). The canada.ca API in a package. Built for Node 22+ and the modern web. No dependencies, no config, no noise.
 
 ## Browser
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/canada-api@5.2.0/dist/ca.js"></script>
 ```
-
-The canada.ca API in a package. Built for Node 22+ and the modern web. No dependencies, no config, no noise.
 
 ### Install
 
@@ -31,8 +29,6 @@ import ca from 'canada-api'
 ```shell
 npm test
 ```
-
-The Canada.ca API in a package. Built for Node 22+ and the modern web. No dependencies, no config, no noise.
 
 ## API
 
@@ -157,15 +153,13 @@ try {
 
 [![NPM Version](https://img.shields.io/npm/v/canada-api?branch=main)](https://www.npmjs.com/package/canada-api) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://github.com/dnd-mdn/canada-api/blob/main/LICENSE)
 
-API multiplateforme pour récupérer des données publiques de [canada.ca](https://www.canada.ca).
+API multiplateforme pour récupérer des données publiques de [canada.ca](https://www.canada.ca). L'API de canada.ca en package. Conçu pour Node 22+ et le web moderne. Aucune dépendance, aucune configuration, aucun bruit.
 
 ## Navigateur
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/canada-api@5.2.0/dist/ca.js"></script>
 ```
-
-Built for Node.js 22+ and modern browsers. Uses native `fetch`, `node:url`, and `node:util` — no external dependencies.
 
 ### Installation
 
@@ -177,6 +171,12 @@ npm install canada-api
 
 ```js
 import ca from 'canada-api'
+```
+
+## Tests
+
+```shell
+npm test
 ```
 
 ## API
